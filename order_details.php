@@ -108,7 +108,7 @@ if (isset($_GET['order_id'])) {
                        $fetch_orders['payment_status'] === 'completed' ? 'active' : '' ?>">
            <i class="fa-solid fa-clipboard-list" style="color: <?= in_array($fetch_orders['payment_status'], ['preparing order', 'order picked up', 'to be delivered', 'completed']) ? 'lightgreen' : 'grey'; ?>"></i>
            <p  style="color: <?= in_array($fetch_orders['payment_status'], ['preparing order', 'order picked up', 'to be delivered', 'completed']) ? 'lightgreen' : 'grey'; ?>">Preparing Order</p>
-        <?php if ($fetch_orders['payment_status'] === 'preparing order') : ?>
+        <?php if ($fetch_orders['payment_status'] === 'intransit') : ?>
             <span><?= $fetch_orders['status_updated_at'] ?></span>
         <?php endif; ?>
     </div>
