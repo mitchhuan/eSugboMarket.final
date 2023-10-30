@@ -232,7 +232,6 @@
    background-color: var(--white);
    box-shadow: var(--box-shadow);
    border-radius: .5rem;
-   font-size: 2rem;
    text-transform: capitalize;
    color:var(--black);
 }
