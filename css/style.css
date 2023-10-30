@@ -234,7 +234,6 @@
    border-radius: .5rem;
    text-transform: capitalize;
    color:var(--black);
-   font-weight: bold;
 }
 
 .p-category a:hover{
