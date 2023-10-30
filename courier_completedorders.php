@@ -75,13 +75,7 @@ if(isset($_GET['delete'])){
          <p> payment method : <span><?= $fetch_orders['method']; ?></span> </p>
          <form action="" method="POST">
             <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id']; ?>">
-            <select name="update_payment" class="drop-down">
-               <option value="" selected disabled><?= $fetch_orders['payment_status']; ?></option>
-               <option value="intransit">in transit</option>
-               <option value="order picked up">order picked up</option>
-               <option value="about to deliver">about to deliver</option>
-               <option value="completed">completed</option>
-            </select>
+               <p style="border-style: dashed; border-color: blue; text-align: center; color:#6495ED; font-size: 30px;">COMPLETED</p>
             <div class="flex-btn">
                <a href="courier_orders.php?delete=<?= $fetch_orders['order_id']; ?>" class="delete-btn" onclick="return confirm('delete this order?');">delete</a>
             </div>
