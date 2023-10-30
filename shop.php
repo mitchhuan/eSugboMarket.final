@@ -101,6 +101,11 @@ if(isset($_POST['add_to_cart'])){
    <a href="category.php?category=poultry and meat">poultry and meat</a>
    <a href="category.php?category=fresh seafood">fresh seafood</a>
    <a href="category.php?category=spices and condiments">spices and condiments</a>
+   <a href="category.php?category=clothing and apparel">clothing and apparel</a>
+   <a href="category.php?category=footwear and accessories">footwear and accessories</a>
+   <a href="category.php?category=kitchen stuff ">kitchen stuff </a>
+   <a href="category.php?category=local snacks and street food">local snacks and street food</a>
+   
 
 
 </section>
@@ -142,13 +147,6 @@ if(isset($_POST['add_to_cart'])){
    </div>
 
 </section>
-
-
-
-
-
-
-
 
 <?php include 'footer.php'; ?>
 
