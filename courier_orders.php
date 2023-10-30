@@ -15,9 +15,9 @@ if(isset($_POST['update_order'])){
    $order_id = $_POST['order_id'];
    $update_payment = $_POST['update_payment'];
    $update_payment = filter_var($update_payment, FILTER_SANITIZE_STRING);
-   $update_orders = $conn->prepare("UPDATE `orders` SET payment_status = ? WHERE id = ?");
+   $update_orders = $conn->prepare("UPDATE `orders` SET payment_status = ? WHERE order_id = ?");
    $update_orders->execute([$update_payment, $order_id]);
-   $message[] = 'payment has been updated!';
+   $message[] = 'order has been updated!';
 
 };
 ?>
@@ -36,7 +36,7 @@ if(isset($_POST['update_order'])){
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/admin_style.css">
 
-   <script>
+   <!-- <script>
    function toggleButtons() {
     var acceptButton = document.getElementById("accept");
     var updateButton = document.getElementById("update");
@@ -44,7 +44,7 @@ if(isset($_POST['update_order'])){
         acceptButton.style.visibility = "hidden";
         updateButton.style.visibility = "visible";
    }
-   </script>
+   </script> -->
 
 </head>
 <body>
@@ -75,14 +75,14 @@ if(isset($_POST['update_order'])){
             <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id']; ?>">
             <select name="update_payment" class="drop-down">
                <option value="" selected disabled><?= $fetch_orders['payment_status']; ?></option>
-               <option value="intransit">in transit</option>
+               <option value="preparing order">preparing order</option>
                <option value="order picked up">order picked up</option>
-               <option value="about to deliver">about to deliver</option>
+               <option value="to be delivered">to be delivered</option>
                <option value="completed">completed</option>
             </select>
             <div class="flex-btn">
-               <input onclick="toggleButtons()" id="accept" type="submit" name="accept_order" class="option-btn" value="accept">
-               <input id="update" style="visibility:hidden" type="submit" name="update_order" class="btn" value="update">
+               <!-- <input onclick="toggleButtons()" id="accept" type="submit" name="accept_order" class="option-btn" value="accept"> -->
+               <input type="submit" name="update_order"<?= $fetch_orders['order_id']; ?> class="option-btn" value="update">
             </div> 
          </form>
       </div>
