@@ -71,6 +71,9 @@ if(isset($_POST['send'])){
       <!-- Display user's name and email as read-only fields -->
       <input type="text" name="name" class="box" value="<?= $user['name'] ?>" readonly>
       <input type="email" name="email" class="box" value="<?= $user['email'] ?>" readonly>
+      <input type="text" name="name" class="box" required placeholder="enter your name">
+      <input type="email" name="email" class="box" required placeholder="enter your email">
+      <input type="number" name="number" min="0" class="box" required placeholder="enter your number">
       <input type="number" name="number" min="0" class="box" value="<?= $user['number'] ?>" readonly>
       <textarea name="msg" class="box" required placeholder="enter your message" cols="30" rows="10"></textarea>
       <input type="submit" value="send message" class="btn" name="send">
