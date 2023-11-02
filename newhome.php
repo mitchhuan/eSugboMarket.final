@@ -34,7 +34,7 @@ session_start();
          <h3>Reach For A Healthier You at Carbon Market</h3>
          <p>Welcome to eSugboMarket, your one-stop destination for all your local and artisanal needs! 
             We are a passionate team dedicated to bringing the charm of your favorite public market right to your doorstep.</p>
-         <a href="#category" class="btn">Get Started</a>
+         <a href="newabout.php" class="btn">about us</a>
       </div>
 
    </section>
@@ -49,8 +49,7 @@ session_start();
       <a href="newcategory.php?category=fruits and vegetables">
       <div class="box">
          <img src="images/cat-1.png" alt="">
-         <h3>Fresh fruits and vegetables</h3>
-
+         <h3>fruits</h3>
       </div>
       </a>
       
@@ -58,22 +57,21 @@ session_start();
       <a href="newcategory.php?category=poultry and meat">
       <div class="box">
          <img src="images/cat-2.png" alt="">
-         <h3>Poultry and meat products</h3>
-
+         <h3>meat</h3>
       </div>
       </a>
 
       <a href="newcategory.php?category=Drygoods and grains">
       <div class="box">
          <img src="images/cat-3.png" alt="">
-         <h3>Dry goods and grains</h3>
+         <h3>vegetables</h3>
       </div>
       </a>
 
       <a href="newcategory.php?category=fresh seafood">
       <div class="box">
          <img src="images/cat-4.png" alt="">
-         <h3>Fresh seafood</h3>
+         <h3>fish</h3>
       </div>
       </a>
 
