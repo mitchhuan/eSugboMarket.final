@@ -67,7 +67,7 @@ if(!isset($admin_id)){
 
       <div class="box">
       <?php
-         $select_orders = $conn->prepare("SELECT * FROM `orders`");
+         $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE payment_status != 'completed'");
          $select_orders->execute();
          $number_of_orders = $select_orders->rowCount();
       ?>
