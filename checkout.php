@@ -30,7 +30,7 @@ if(isset($_POST['order'])){
    $email = filter_var($email, FILTER_SANITIZE_STRING);
    $method = $_POST['method'];
    $method = filter_var($method, FILTER_SANITIZE_STRING);
-   $address =  $_POST['flat'] .' '. $_POST['street'] .' '. $_POST['city'] .' '. $_POST['state'] .' '. $_POST['country'] .' - '. $_POST['pin_code'];
+   $address =  $_POST['address'] .' - '. $_POST['pin_code'];
    $address = filter_var($address, FILTER_SANITIZE_STRING);
    $placed_on = date('m-d-Y');
 
@@ -129,35 +129,32 @@ if(isset($_POST['order'])){
          <div class="inputBox">
             <span>payment method :</span>
             <select name="method" class="box" required>
-               <option value="cash on delivery">cash on delivery</option>
+               <option value="cash on delivery">Cash on Delivery</option>
                <!-- <option value="credit card">credit card</option>
                <option value="paytm">paytm</option>
                <option value="paypal">paypal</option> -->
             </select>
          </div>
          <div class="inputBox">
-            <span>address line 01 :</span>
-            <input type="text" name="flat" placeholder="e.g. flat number" class="box" required>
-         </div>
-         <div class="inputBox">
-            <span>address line 02 :</span>
-            <input type="text" name="street" placeholder="e.g. street name" class="box" required>
-         </div>
-         <div class="inputBox">
             <span>city :</span>
-            <input type="text" name="city" placeholder="e.g. mumbai" class="box" required>
-         </div>
-         <div class="inputBox">
-            <span>state :</span>
-            <input type="text" name="state" placeholder="e.g. maharashtra" class="box" required>
+            <select name="method" class="box" required>
+               <option value="cash on delivery">Mandaue</option>
+               <option value="credit card">Talamban</option>
+            </select>
          </div>
          <div class="inputBox">
             <span>country :</span>
-            <input type="text" name="country" placeholder="e.g. India" class="box" required>
+            <select name="method" class="box" required>
+               <option value="cash on delivery">Philippines</option>
+            </select>
+         </div>
+         <div class="inputBox">
+            <span>address:</span>
+            <input type="text" name="address" placeholder="e.g. 19c Maria Elena Residences" class="box" required>
          </div>
          <div class="inputBox">
             <span>pin code :</span>
-            <input type="number" min="0" name="pin_code" placeholder="e.g. 123456" class="box" required>
+            <input type="number" min="0" name="pin_code" placeholder="e.g. 1234" class="box" required>
          </div>
       </div>
 
@@ -167,16 +164,19 @@ if(isset($_POST['order'])){
 
 </section>
 
-
-
-
-
-
-
-
 <?php include 'footer.php'; ?>
 
-<script src="js/script.js"></script>
+<script src="js/script.js">
+
+// JavaScript to hide the message after 5 seconds
+window.onload = function() {
+    var messageElement = document.getElementById('message');
+    if (messageElement) {
+        setTimeout(function() {
+            messageElement.style.display = 'none';
+        }, 5000); // 5000 milliseconds = 5 seconds
+    }
+};</script>
 
 </body>
 </html>
