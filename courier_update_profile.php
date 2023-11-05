@@ -3,9 +3,9 @@
 
 session_start();
 
-$admin_id = $_SESSION['admin_id'];
+$cour_id = $_SESSION['cour_id'];
 
-if (!isset($admin_id)) {
+if (!isset($cour_id)) {
     header('location:login.php');
 }
 
@@ -23,7 +23,7 @@ if (isset($_POST['update_profile'])) {
     }
 
     $email_check_query = $conn->prepare("SELECT id FROM `users` WHERE email = ? AND id != ?");
-    $email_check_query->execute([$email, $admin_id]);
+    $email_check_query->execute([$email, $cour_id]);
     if ($email_check_query->rowCount() > 0) {
         $message[] = 'Email is already in use.';
     }
@@ -31,7 +31,7 @@ if (isset($_POST['update_profile'])) {
     if (empty($message)) {
         // Email and phone number are valid, so proceed with the update.
         $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ? WHERE id = ?");
-        $update_profile->execute([$name, $email, $admin_id]);
+        $update_profile->execute([$name, $email, $cour_id]);
 
         // Check if the username, email, or phone number was updated and show messages accordingly.
         $updatedFields = array();
@@ -59,7 +59,7 @@ if (isset($_POST['update_pass'])) {
     } else {
         // Check if the old password matches the user's current hashed password
         $check_password_query = $conn->prepare("SELECT password FROM `users` WHERE id = ?");
-        $check_password_query->execute([$admin_id]);
+        $check_password_query->execute([$cour_id]);
         $row = $check_password_query->fetch(PDO::FETCH_ASSOC);
 
         if (password_verify($old_pass, $row['password'])) {
@@ -68,7 +68,7 @@ if (isset($_POST['update_pass'])) {
 
             // Update the password
             $update_pass_query = $conn->prepare("UPDATE `users` SET password = ? WHERE id = ?");
-            $update_pass_query->execute([$hashed_new_pass, $admin_id]);
+            $update_pass_query->execute([$hashed_new_pass, $cour_id]);
             $message[] = 'Password updated successfully!';
         } else {
             $message[] = 'Old password not matched!';
@@ -100,7 +100,7 @@ if (!empty($_FILES['image']['name'])) {
         }
 
         $update_image = $conn->prepare("UPDATE `users` SET image = ? WHERE id = ?");
-        $update_image->execute([$image, $admin_id]);
+        $update_image->execute([$image, $cour_id]);
         if ($update_image) {
             move_uploaded_file($image_tmp_name, $image_folder . $image);
 
@@ -130,7 +130,7 @@ if (isset($_POST['delete_user'])) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>Update Admin Profile</title>
+   <title>Update Courier Profile</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- Font Awesome CDN link -->
@@ -140,7 +140,7 @@ if (isset($_POST['delete_user'])) {
    <link rel="stylesheet" href="css/components.css">
 </head>
 <body>
-<?php include 'admin_header.php'; ?>
+<?php include 'courier_header.php'; ?>
 
 <section class="update-profile">
       <h1 class="title">update profile</h1>
@@ -170,7 +170,7 @@ if (isset($_POST['delete_user'])) {
          <div class="flex-btn">
             <input type="submit" class="btn" value="update profile" name="update_profile">
             <button class="delete-btn" name="delete_user" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete User</button>
-            <a href="home.php" class="option-btn">go back</a>  
+            <a href="courier_page.php" class="option-btn">go back</a>  
          </div>
       </form>
    </section>
@@ -178,4 +178,3 @@ if (isset($_POST['delete_user'])) {
 <script src="js/script.js"></script>
 </body>
 </html>
-

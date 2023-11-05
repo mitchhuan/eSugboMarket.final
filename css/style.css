@@ -232,6 +232,7 @@
    background-color: var(--white);
    box-shadow: var(--box-shadow);
    border-radius: .5rem;
+   font-size: 2rem;
    text-transform: capitalize;
    color:var(--black);
 }
@@ -744,6 +745,191 @@
    margin-bottom: 5px; /* Add spacing between the icon and the text */
 }
 
+/* Container for the message display */
+.message-container {
+   display: flex;
+   margin-top: 5rem;
+   background: #f0f2f5;
+   border-radius: 0.5rem;
+   border: 1px solid #ccc;
+   max-width: 800px; /* Adjust the maximum width as needed */
+   margin: 0 auto; /* Center the container */
+}
+
+/* Left column for users */
+.users {
+   background: #f5f6f8;
+   width: 25%;
+   max-height: calc(100vh - 5rem);
+   overflow-y: auto;
+   border-right: 1px solid #ccc;
+}
+
+.users h1 {
+   margin: 0;
+   padding: 1rem;
+   background-color: var(--green);
+   color: #fff;
+}
+
+.users ul {
+   font-size: large;
+   list-style: none;
+   padding: 0;
+}
+
+.users li {
+   padding: 1rem;
+   border-bottom: 1px solid #ccc;
+   cursor: pointer;
+}
+
+.users li:hover {
+   box-shadow: var(--box-shadow);
+}
+
+.users .user-box{
+   display: flex;
+   justify-content: start;
+   align-items: center;
+}
+
+.users .user-box span{
+   padding-left: 1rem;
+}
+
+
+.users .user-box img{
+   width: 3.5rem; /* Set the desired width for the circular image container */
+   height: 3.5rem; /* Set the desired height for the circular image container */
+   border-radius: 50%; /* Create a circular shape */
+   overflow: hidden; /* Clip the image within the circular container */
+}
+
+/* Header for the selected user's profile */
+.user-profile {
+   display: flex;
+   justify-content: flex-start;
+   align-items: center;
+   padding: 1rem;
+   background: #f0f2f5; /* Background color for the profile header */
+   border-bottom: 1px solid #ccc;
+}
+
+.user-image {
+   width: 4.5rem; /* Set the desired width for the circular image container */
+   height: 4.5rem; /* Set the desired height for the circular image container */
+   border-radius: 50%; /* Create a circular shape */
+   overflow: hidden; /* Clip the image within the circular container */
+}
+
+.user-image img {
+   width: 100%; /* Ensure the image fills the circular container */
+   height: 100%; /* Ensure the image fills the circular container */
+   object-fit: cover; /* Maintain the aspect ratio and cover the container */
+}
+
+.user-names {
+   font-weight: bold;
+   font-size: 18px; /* Adjust the font size */
+}
+
+
+.user-name {
+   font-weight: bold;
+   font-size: 18px; /* Adjust the font size */
+   padding-left: 1rem;
+}
+
+
+/* Message display area */
+.message-display {
+   flex: 1; /* Allow the message display to grow and occupy remaining space */
+   overflow-y: auto;
+   background: #f5f6f8; /* Background color for messages */
+   padding: 1rem;
+   display: flex;
+   flex-direction: column-reverse;
+   height: 50rem;
+   width: 60rem;
+}
+
+.message-item {
+   background: #fff;
+   border-radius: 0.5rem;
+   max-width: 70%; /* Adjust the maximum width for message bubbles */
+   padding: 1rem;
+   margin: 0.5rem;
+   word-break: break-all;
+   font-size: small;
+}
+
+.message-item.sent {
+   align-self: flex-end; /* Sender's messages on the right side */
+   background: var(--green); /* Adjust the sender's message background color */
+   color: #fff;
+}
+
+.message-box {
+   background: #f0f2f5; /* Background color for the message input box */
+   padding: 1rem;
+   display: flex;
+   align-items: center;
+   border-top: 1px solid #ccc;
+}
+
+.message-box input[type="text"] {
+   flex: 1; /* Allow the input to grow and occupy remaining space */
+   border: none;
+   background-color: #fff;
+   padding: 1rem;
+   font-size: 16px; /* Adjust the font size */
+   border-radius: 0.5rem;
+   width: 52rem;
+}
+
+/* Send button */
+.message-box button {
+   background-color: var(--green);
+   color: #fff;
+   padding: 1rem 1.5rem;
+   border: none;
+   cursor: pointer;
+   font-size: 16px; /* Adjust the font size */
+   border-radius: 0.5rem;
+   margin-left: 1rem; /* Add spacing between the input and the button */
+}
+
+/* Send button */
+.message-box button:hover {
+   background-color: var(--lightgreen);
+}
+
+/* CSS for the search bar */
+.search-bar {
+   background-color: lightgray;
+   border: 1px solid var(--border);
+   border-radius: 0.5rem;
+   padding: 1rem; /* Add padding to the search bar */
+}
+
+.search-bar input[type="text"] {
+   border: none;
+   background-color: transparent;
+   font-size: 16px;
+   width: 100%; /* Occupy the entire width */
+   padding: 0; /* Add some padding */
+   outline: none; /* Remove the default input outline */
+}
+
+/* Style for the input placeholder text */
+::placeholder {
+   color: var(--light-color) /* Placeholder text color */
+}
+
+
+
+
 @media (max-width:768px){
 
    .home-category .box-container {
@@ -771,6 +957,18 @@
       width: 100%;
    }
 
+   .message-box input[type="text"] {
+      max-width: 90%;
+   }
+
+   .users {
+      width: 100%;
+      overflow-x: hidden;
+   }
+
+   
+
+
 }
 
 @media (max-width:450px){
@@ -788,7 +986,6 @@
       width: 100%;
    }
 
-
    .about .row .box img{
       width: 100%;
       height: auto;
@@ -797,5 +994,32 @@
    .wishlist .box-container{
       grid-template-columns: 1fr;
    }
+
+   .message-box input[type="text"] {
+      width: 80%;
+   }
+
+   .message-display {
+      width: 100%;
+      overflow: hidden;
+   }
+
+   .users .user-box span{
+      display: none;
+   }
+
+   .users .user-box img{
+      width: 3.5rem; /* Set the desired width for the circular image container */
+      height: 3.5rem; /* Set the desired height for the circular image container */
+      border-radius: 50%; /* Create a circular shape */
+      overflow: hidden; /* Clip the image within the circular container */
+   }
+
+   .message-bar {
+      height: 2px; /* Set the height of the bar */
+      margin-bottom: 10px; /* Add some spacing between the bar and messages */
+      width: 34rem;
+   }   
+
 
 }

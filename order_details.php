@@ -35,6 +35,7 @@ if (isset($_GET['order_id'])) {
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Order Details</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
       <!-- font awesome cdn link  -->
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
@@ -67,7 +68,6 @@ if (isset($_GET['order_id'])) {
    <p> placed on : <span><?= $fetch_orders['placed_on']; ?></span> </p>
    <p> name : <span><?= $fetch_orders['name']; ?></span> </p>
    <p> phone number : <span><?= $fetch_orders['number']; ?></span> </p>
-   <p> email : <span><?= $fetch_orders['email']; ?></span> </p>
    <p> address : <span><?= $fetch_orders['address']; ?></span> </p>
    <p> payment method : <span><?= $fetch_orders['method']; ?></span> </p>
    <p> your orders : <span><?= $fetch_orders['total_products']; ?></span> </p>
@@ -108,7 +108,7 @@ if (isset($_GET['order_id'])) {
                        $fetch_orders['payment_status'] === 'completed' ? 'active' : '' ?>">
            <i class="fa-solid fa-clipboard-list" style="color: <?= in_array($fetch_orders['payment_status'], ['preparing order', 'order picked up', 'to be delivered', 'completed']) ? 'lightgreen' : 'grey'; ?>"></i>
            <p  style="color: <?= in_array($fetch_orders['payment_status'], ['preparing order', 'order picked up', 'to be delivered', 'completed']) ? 'lightgreen' : 'grey'; ?>">Preparing Order</p>
-        <?php if ($fetch_orders['payment_status'] === 'intransit') : ?>
+        <?php if ($fetch_orders['payment_status'] === 'preparing order') : ?>
             <span><?= $fetch_orders['status_updated_at'] ?></span>
         <?php endif; ?>
     </div>

@@ -1,17 +1,6 @@
 <?php
 include 'config.php';
 
-if(isset($message)){
-    foreach($message as $message){
-       echo '
-       <div class="message">
-          <span>'.$message.'</span>
-          <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-       </div>
-       ';
-    }
- }
- 
 $name = '';
 $email = '';
 $number = '';
@@ -27,6 +16,31 @@ if (isset($_POST['submit'])) {
     $pass = filter_var($pass, FILTER_SANITIZE_STRING);
     $cpass = $_POST['cpass'];
     $cpass = filter_var($cpass, FILTER_SANITIZE_STRING);
+
+    // Check if any documents were uploaded
+    $documents = [];
+
+    if (isset($_FILES['documents'])) {
+        $documentDirectory = 'document_uploads/';
+
+        foreach ($_FILES['documents']['name'] as $key => $documentName) {
+            if ($_FILES['documents']['error'][$key] === UPLOAD_ERR_OK) {
+                $documentName = filter_var($documentName, FILTER_SANITIZE_STRING);
+                $document_tmp_name = $_FILES['documents']['tmp_name'][$key];
+                $uniqueDocumentName = time() . '_' . $documentName;
+                $documentPath = $documentDirectory . $uniqueDocumentName;
+
+                // Move the uploaded document to the server
+                move_uploaded_file($document_tmp_name, $documentPath);
+
+                // Store document information
+                $documents[] = [
+                    'name' => $uniqueDocumentName,
+                    'path' => $documentPath,
+                ];
+            }
+        }
+    }
 
     // Regular expression to match passwords with at least 8 characters and at least one number
     $passwordRegex = '/^(?=.*[a-z])(?=.*\d)[a-zA-Z\d]{8,}$/';
@@ -61,14 +75,24 @@ if (isset($_POST['submit'])) {
             // Hash the password
             $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
         
+            // Insert user information into the database
             $insert = $conn->prepare("INSERT INTO `users` (name, email, password, number, image) VALUES (?, ?, ?, ?, ?)");
             $insert->execute([$name, $email, $hashedPassword, $number, $image]);
-        
-            // Redirect and handle login
+
+            // Get the newly inserted user's ID
             $user_id = $conn->lastInsertId();
+
+            // Insert document information into the database
+            foreach ($documents as $document) {
+                $insertDocument = $conn->prepare("INSERT INTO `documents` (user_id, document_name, document_path) VALUES (?, ?, ?)");
+                $insertDocument->execute([$user_id, $document['name'], $document['path']]);
+
+            }
+
+            // Redirect to the courier page with cour_id parameter
             session_start();
             $_SESSION['user_id'] = $user_id;
-            header('Location: home.php');
+            header('Location: courier_page.php');
             exit;
         }
     }
@@ -82,7 +106,7 @@ if (isset($_POST['submit'])) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>register</title>
+   <title>Courier Registration</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
@@ -94,20 +118,37 @@ if (isset($_POST['submit'])) {
 </head>
 <body>
 
+<?php
+
+if(isset($message)){
+   foreach($message as $message){
+      echo '
+      <div class="message">
+         <span>'.$message.'</span>
+         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
+      </div>
+      ';
+   }
+}
+
+?>
+
 <?php include 'newheader.php'; ?>
    
 <section class="form-container">
 
-   <form action="" enctype="multipart/form-data" method="POST">
-      <h3>register now</h3>
-      <input type="text" name="name" class="box" placeholder="enter your name" required value="<?= $name ?>">
-      <input type="email" name="email" class="box" placeholder="enter your email" required value="<?= $email ?>">
-      <input type="number" name="number" class="box" placeholder="enter your number" required value="<?= $number ?>">
-      <input type="password" name="pass" class="box" placeholder="enter your password" required>
-      <input type="password" name="cpass" class="box" placeholder="confirm your password" required>
-      <input type="submit" value="register now" class="btn" name="submit">
-      <p>want to register as courier? <a href="courreg.php">register</a></p>
-      <p>already have an account? <a href="login.php">login now</a></p>
+<form action="" enctype="multipart/form-data" method="POST">
+      <h3>Courier Registration</h3>
+      <input type="text" name="name" class="box" placeholder="Enter your name" required value="<?= $name ?>">
+      <input type="email" name="email" class="box" placeholder="Enter your email" required value="<?= $email ?>">
+      <input type="number" name="number" class="box" placeholder="Enter your number" required value="<?= $number ?>">
+      <input type="password" name="pass" class="box" placeholder="Enter your password" required>
+      <input type="password" name="cpass" class="box" placeholder="Confirm your password" required>
+      <label for="documents">Upload Documents for Verification:</label>
+      <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
+      <input type="submit" value="Register Now" class="btn" name="submit">
+      <p>Already have an account? <a href="login.php">Login now</a></p>
+      <p>Go back to user registration <a href="register.php">Back</a></p>
    </form>
 
 </section>

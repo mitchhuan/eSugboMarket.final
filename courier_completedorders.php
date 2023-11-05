@@ -4,9 +4,9 @@
 
 session_start();
 
-$courier_id = $_SESSION['courier_id'];
+$cour_id = $_SESSION['cour_id'];
 
-if(!isset($courier_id)){
+if(!isset($cour_id)){
    header('location:login.php');
 };
 
@@ -39,6 +39,7 @@ if(isset($_GET['delete'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>completed orders</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -75,7 +76,13 @@ if(isset($_GET['delete'])){
          <p> payment method : <span><?= $fetch_orders['method']; ?></span> </p>
          <form action="" method="POST">
             <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id']; ?>">
-            <p style="border-style: dashed; border-color:#6495ED; text-align: center; color:green; font-size: 30px;">COMPLETED</p>
+            <select name="update_payment" class="drop-down">
+               <option value="" selected disabled><?= $fetch_orders['payment_status']; ?></option>
+               <option value="intransit">in transit</option>
+               <option value="order picked up">order picked up</option>
+               <option value="about to deliver">about to deliver</option>
+               <option value="completed">completed</option>
+            </select>
             <div class="flex-btn">
                <a href="courier_orders.php?delete=<?= $fetch_orders['order_id']; ?>" class="delete-btn" onclick="return confirm('delete this order?');">delete</a>
             </div>

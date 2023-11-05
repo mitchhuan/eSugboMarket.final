@@ -39,6 +39,7 @@ if(isset($_GET['delete'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>completed orders</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -75,7 +76,7 @@ if(isset($_GET['delete'])){
          <p> payment method : <span><?= $fetch_orders['method']; ?></span> </p>
          <form action="" method="POST">
             <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id']; ?>">
-            <p style="border-style: dashed; border-color:#6495ED; text-align: center; color:green; font-size: 30px;">COMPLETED</p>
+            <p> status: <span><?= $fetch_orders['payment_status']; ?></span> </p>
             <div class="flex-btn">
                <a href="admin_orders.php?delete=<?= $fetch_orders['order_id']; ?>" class="delete-btn" onclick="return confirm('delete this order?');">delete</a>
             </div>

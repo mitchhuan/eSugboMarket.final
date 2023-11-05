@@ -1,63 +1,47 @@
 <?php
-
 @include 'config.php';
 
 session_start();
 
 $email = '';
 
-if(isset($_POST['submit'])){
+if (isset($_POST['submit'])) {
+    $email = $_POST['email'];
+    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    $pass = $_POST['pass'];
+    $pass = filter_var($pass, FILTER_SANITIZE_STRING);
 
-   $email = $_POST['email'];
-   $email = filter_var($email, FILTER_SANITIZE_STRING);
-   $pass =  $_POST['pass'];
-   $pass = filter_var($pass, FILTER_SANITIZE_STRING);
+    $sql = "SELECT id, password, user_type FROM `users` WHERE email = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->execute([$email]);
+    $rowCount = $stmt->rowCount();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-   $sql = "SELECT * FROM `users` WHERE email = ? AND password = ?";
-   $stmt = $conn->prepare($sql);
-   $stmt->execute([$email, $pass]);
-   $rowCount = $stmt->rowCount();  
-
-   $row = $stmt->fetch(PDO::FETCH_ASSOC);
-
-   if($rowCount > 0){
-
-      if($row['user_type'] == 'admin'){
-         $_SESSION['admin_id'] = $row['id'];
-         header('location:admin_page.php');
-      
-      }elseif($row['user_type'] == 'courier'){
-         $_SESSION['courier_id'] = $row['id'];
-         header('location:courier_page.php');
-         
-      }elseif($row['user_type'] == 'user'){
-
-         $_SESSION['user_id'] = $row['id'];
-         header('location:home.php');
-
-      }else{
-         $message[] = 'no user found!';
-      }
-
-   }else{
-      $message[] = 'incorrect email or password!';
-   }
-
-   // if($rowCount > 0){
-
-   // if($row['user_type'] == 'courier'){
-
-   //       $_SESSION['courier_id'] = $row['id'];
-   //       header('location:courier_page.php');
-
-   //    }else{
-   //       $message[] = 'no user found!';
-   //    }
-
-   // }
+    if ($rowCount > 0) {
+        $hashedPassword = $row['password'];
+        if (password_verify($pass, $hashedPassword)) {
+            // Password is correct, perform login based on user_type
+            if ($row['user_type'] == 'admin') {
+                $_SESSION['admin_id'] = $row['id'];
+                header('location:admin_page.php');
+            } elseif ($row['user_type'] == 'courier') {
+                $_SESSION['courier_id'] = $row['id'];
+                header('location:courier_page.php');
+            } elseif ($row['user_type'] == 'user') {
+                $_SESSION['user_id'] = $row['id'];
+                header('location:home.php');
+            } else {
+                $message[] = 'No user found!';
+            }
+        } else {
+            $message[] = 'Incorrect email or password!';
+        }
+    } else {
+        $message[] = 'No user found!';
+    }
 }
-
 ?>
+
 
 
 
@@ -68,6 +52,7 @@ if(isset($_POST['submit'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>login</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">

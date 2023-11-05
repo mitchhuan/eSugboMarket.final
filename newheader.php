@@ -1,18 +1,3 @@
-<?php
-
-if(isset($message)){
-   foreach($message as $message){
-      echo '
-      <div class="message">
-         <span>'.$message.'</span>
-         <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-      </div>
-      ';
-   }
-}
-
-?>
-
 <header class="header">
 
    <div class="flex">
@@ -24,6 +9,7 @@ if(isset($message)){
          <a href="newshop.php">shop</a>
          <a href="newabout.php">about</a>
          <a href="newcontact.php">contact</a>
+         <a href="map.php">tour</a>
       </nav>
 
       <div class="icons">

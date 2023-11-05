@@ -30,7 +30,7 @@ if(isset($_POST['order'])){
    $email = filter_var($email, FILTER_SANITIZE_STRING);
    $method = $_POST['method'];
    $method = filter_var($method, FILTER_SANITIZE_STRING);
-   $address =  $_POST['address'] .' - '. $_POST['pin_code'];
+   $address =  $_POST['address'] .','. $_POST['city'] .', '. $_POST['country'] .' - '. $_POST['pin_code'];
    $address = filter_var($address, FILTER_SANITIZE_STRING);
    $placed_on = date('m-d-Y');
 
@@ -74,6 +74,7 @@ if(isset($_POST['order'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>checkout</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -115,19 +116,19 @@ if(isset($_POST['order'])){
 
       <div class="flex">
          <div class="inputBox">
-            <span>your name :</span>
+            <span>Your Name :</span>
             <input type="text" name="name" placeholder="enter your name" class="box" required value="<?= isset($name) ? $name : ''; ?>"readonly>
          </div>
          <div class="inputBox">
-            <span>your number :</span>
+            <span>Your Number :</span>
             <input type="number" name="number" placeholder="enter your number" class="box" required value="<?= isset($number) ? $number : ''; ?>"readonly>
          </div>
          <div class="inputBox">
-            <span>your email :</span>
+            <span>Your Email :</span>
             <input type="email" name="email" placeholder="enter your email" class="box" required value="<?= isset($email) ? $email : ''; ?>"readonly>
          </div>
          <div class="inputBox">
-            <span>payment method :</span>
+            <span>Payment Method :</span>
             <select name="method" class="box" required>
                <option value="cash on delivery">Cash on Delivery</option>
                <!-- <option value="credit card">credit card</option>
@@ -136,27 +137,24 @@ if(isset($_POST['order'])){
             </select>
          </div>
          <div class="inputBox">
-            <span>city :</span>
-            <select name="method" class="box" required>
-               <option value="cash on delivery">Mandaue</option>
-               <option value="credit card">Talamban</option>
-            </select>
-         </div>
-         <div class="inputBox">
-            <span>country :</span>
-            <select name="method" class="box" required>
-               <option value="cash on delivery">Philippines</option>
-            </select>
-         </div>
-         <div class="inputBox">
-            <span>address:</span>
+            <span>Address:</span>
             <input type="text" name="address" placeholder="e.g. 19c Maria Elena Residences" class="box" required>
          </div>
          <div class="inputBox">
-            <span>pin code :</span>
+            <span>Barangay and City:</span>
+            <input type="text" name="city" placeholder="e.g. Talamban, Cebu City" class="box" required>
+         </div>
+         <div class="inputBox">
+            <span>Country :</span>
+            <input type="text" name="country" placeholder="Philippines" class="box" value="Philippines" readonly>
+         </div>
+         <div class="inputBox">
+            <span>Pin Code :</span>
             <input type="number" min="0" name="pin_code" placeholder="e.g. 1234" class="box" required>
          </div>
       </div>
+      <h2>*time to deliver may take 40mins+</h2>
+      <h2>**with additional delivery fee</h2>
 
       <input type="submit" name="order" class="btn <?= ($cart_grand_total > 1)?'':'disabled'; ?>" value="place order">
 
@@ -164,10 +162,7 @@ if(isset($_POST['order'])){
 
 </section>
 
-<?php include 'footer.php'; ?>
-
-<script src="js/script.js">
-
+<script>
 // JavaScript to hide the message after 5 seconds
 window.onload = function() {
     var messageElement = document.getElementById('message');
@@ -177,6 +172,12 @@ window.onload = function() {
         }, 5000); // 5000 milliseconds = 5 seconds
     }
 };</script>
+
+<?php include 'footer.php'; ?>
+
+<script src="js/script.js"></script>
+
+
 
 </body>
 </html>

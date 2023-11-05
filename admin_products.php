@@ -78,6 +78,7 @@ if(isset($_GET['delete'])){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>products</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -100,12 +101,6 @@ if(isset($_GET['delete'])){
          <input type="text" name="name" class="box" required placeholder="enter product name">
          <select name="category" class="box" required>
             <option value="" selected disabled>select category</option>
-<<<<<<< Updated upstream
-               <option value="vegetables">vegetables</option>
-               <option value="fruits">fruits</option>
-               <option value="meat">meat</option>
-               <option value="fish">fish</option>
-=======
                <option value="fruits and vegetables">fruits and vegetables</option>
                <option value="poultry and meat">poultry and meat</option>
                <option value="dry goods and grains">dry goods and grains</option>
@@ -116,7 +111,6 @@ if(isset($_GET['delete'])){
                <option value="footwear and accessories">footwear and accessories</option>
                <option value="handicrafts and souvenir">handicrafts and souvenir</option>
                <option value="kitchen stuff ">kitchen stuff</option>
->>>>>>> Stashed changes
          </select>
          </div>
          <div class="inputBox">

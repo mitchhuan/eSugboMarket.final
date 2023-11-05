@@ -12,7 +12,8 @@ session_start();
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>home page</title>
+   <title>eSugboMarket</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
@@ -34,7 +35,7 @@ session_start();
          <h3>Reach For A Healthier You at Carbon Market</h3>
          <p>Welcome to eSugboMarket, your one-stop destination for all your local and artisanal needs! 
             We are a passionate team dedicated to bringing the charm of your favorite public market right to your doorstep.</p>
-         <a href="newabout.php" class="btn">about us</a>
+         <a href="#category" class="btn">Get Started</a>
       </div>
 
    </section>
@@ -49,7 +50,8 @@ session_start();
       <a href="newcategory.php?category=fruits and vegetables">
       <div class="box">
          <img src="images/cat-1.png" alt="">
-         <h3>fruits</h3>
+         <h3>Fresh fruits and vegetables</h3>
+
       </div>
       </a>
       
@@ -57,21 +59,22 @@ session_start();
       <a href="newcategory.php?category=poultry and meat">
       <div class="box">
          <img src="images/cat-2.png" alt="">
-         <h3>meat</h3>
+         <h3>Poultry and meat products</h3>
+
       </div>
       </a>
 
       <a href="newcategory.php?category=Drygoods and grains">
       <div class="box">
          <img src="images/cat-3.png" alt="">
-         <h3>vegetables</h3>
+         <h3>Dry goods and grains</h3>
       </div>
       </a>
 
       <a href="newcategory.php?category=fresh seafood">
       <div class="box">
          <img src="images/cat-4.png" alt="">
-         <h3>fish</h3>
+         <h3>Fresh seafood</h3>
       </div>
       </a>
 
@@ -129,7 +132,7 @@ session_start();
    <div class="box-container">
 
    <?php
-      $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 16");
+      $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 8");
       $select_products->execute();
       if($select_products->rowCount() > 0){
          while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 

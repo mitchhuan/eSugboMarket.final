@@ -28,7 +28,7 @@ if(isset($message)){
          ?>
          <a href="orders.php">orders<span>(<?= $count_orders->rowCount(); ?>)</span></a>
          <a href="about.php">about</a>
-         <a href="contact.php">contact</a>
+         <a href="contact.php">messages</a>
       </nav>
 
       <div class="icons">

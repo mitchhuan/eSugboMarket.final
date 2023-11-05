@@ -19,6 +19,7 @@ if(!isset($admin_id)){
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>admin page</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -67,7 +68,7 @@ if(!isset($admin_id)){
 
       <div class="box">
       <?php
-         $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE payment_status != 'completed'");
+         $select_orders = $conn->prepare("SELECT * FROM `orders`");
          $select_orders->execute();
          $number_of_orders = $select_orders->rowCount();
       ?>
