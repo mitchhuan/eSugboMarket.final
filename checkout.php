@@ -30,7 +30,7 @@ if(isset($_POST['order'])){
    $email = filter_var($email, FILTER_SANITIZE_STRING);
    $method = $_POST['method'];
    $method = filter_var($method, FILTER_SANITIZE_STRING);
-   $address =  $_POST['address'] .','. $_POST['city'] .', '. $_POST['country'] .' - '. $_POST['pin_code'];
+   $address =  $_POST['address'] .', '. $_POST['city'] .', '. $_POST['country'] .' - '. $_POST['pin_code'];
    $address = filter_var($address, FILTER_SANITIZE_STRING);
    $placed_on = date('m-d-Y');
 
@@ -155,6 +155,7 @@ if(isset($_POST['order'])){
       </div>
       <h2>*time to deliver may take 40mins+</h2>
       <h2>**with additional delivery fee</h2>
+      <h2>***no refunds</h2>
 
       <input type="submit" name="order" class="btn <?= ($cart_grand_total > 1)?'':'disabled'; ?>" value="place order">
 

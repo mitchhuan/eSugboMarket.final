@@ -106,8 +106,8 @@ if (isset($_POST['submit'])) {
       <input type="password" name="pass" class="box" placeholder="enter your password" required>
       <input type="password" name="cpass" class="box" placeholder="confirm your password" required>
       <input type="submit" value="register now" class="btn" name="submit">
-      <p>want to register as courier? <a href="courreg.php">register</a></p>
-      <p>already have an account? <a href="login.php">login now</a></p>
+      <p>Want to register as <b style="color: red;">courier</b>? <a href="courreg.php">register</a></p>
+      <p>Already have an account? <a href="login.php">login now</a></p>
    </form>
 
 </section>

@@ -57,8 +57,8 @@ if(isset($_GET['delete'])){
          <p> user id : <span><?= $fetch_users['id']; ?></span></p>
          <p> username : <span><?= $fetch_users['name']; ?></span></p>
          <p> email : <span><?= $fetch_users['email']; ?></span></p>
-         <p> user type : <span style=" color:<?php if($fetch_users['user_type'] == 'admin'){ echo 'orange'; }
-         elseif($fetch_users['user_type']=='cour'){echo 'red';}?>"><?= $fetch_users['user_type']; ?></span></p>
+         <p> user type : <span style=" color:<?php if($fetch_users['user_type'] == 'admin'){ echo 'blue'; }
+         elseif($fetch_users['user_type']=='cour'){echo 'red';} elseif($fetch_users['user_type']=='ucour'){echo 'orange';}?>"><?= $fetch_users['user_type']; ?></span></p>
          <a href="admin_totalaccounts.php?delete=<?= $fetch_users['id']; ?>" onclick="return confirm('delete this user?');" class="delete-btn">delete</a>
       </div>
       <?php

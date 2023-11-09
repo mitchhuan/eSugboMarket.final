@@ -24,12 +24,15 @@ if (isset($_POST['submit'])) {
             if ($row['user_type'] == 'admin') {
                 $_SESSION['admin_id'] = $row['id'];
                 header('location:admin_page.php');
-            } elseif ($row['user_type'] == 'courier') {
-                $_SESSION['courier_id'] = $row['id'];
+            } elseif ($row['user_type'] == 'cour') {
+                $_SESSION['cour_id'] = $row['id'];
                 header('location:courier_page.php');
             } elseif ($row['user_type'] == 'user') {
                 $_SESSION['user_id'] = $row['id'];
                 header('location:home.php');
+            } elseif ($row['user_type'] == 'ucour') {
+                $_SESSION['cour_id'] = $row['id'];
+                header('location:courier_page.php');
             } else {
                 $message[] = 'No user found!';
             }

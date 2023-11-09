@@ -784,6 +784,11 @@
    cursor: pointer;
 }
 
+li.unread {
+   font-weight: bold;
+   background-color: var(--lightgreen);
+}
+
 .users li:hover {
    box-shadow: var(--box-shadow);
 }
@@ -926,7 +931,6 @@
 ::placeholder {
    color: var(--light-color) /* Placeholder text color */
 }
-
 
 
 

@@ -5,10 +5,6 @@ session_start();
 
 $cour_id = $_SESSION['cour_id'];
 
-if (!isset($cour_id)) {
-   header('location: login.php');
-} else {
-   // Check the courier's user type
    $select_courier = $conn->prepare("SELECT user_type FROM `users` WHERE id = ?");
    $select_courier->execute([$cour_id]);
    $courier = $select_courier->fetch(PDO::FETCH_ASSOC);
@@ -19,7 +15,7 @@ if (!isset($cour_id)) {
        Your courier account is pending approval. You will have access to courier privileges once approved by the admin. 
        Please wait for at least 24 to 72 hours. Thank you!";
    }
-}
+
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +23,7 @@ if (!isset($cour_id)) {
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE,initial-scale=1.0">
-   <title>courier page</title>
+   <title>Courier Page</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link -->
@@ -71,7 +67,7 @@ if (!isset($cour_id)) {
             echo '<h3>' . $number_of_orders . '</h3>';
          }
       ?>
-      <p>orders placed</p>
+      <p>orders available</p>
       <a href="courier_orders.php" class="btn <?php if ($courier['user_type'] !== 'cour') echo 'disabled'; ?>">see orders</a>
       </div>
    </div>

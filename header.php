@@ -22,11 +22,7 @@ if(isset($message)){
       <nav class="navbar">
          <a href="home.php">home</a>
          <a href="shop.php">shop</a>
-         <?php
-            $count_orders = $conn->prepare("SELECT * FROM `orders` WHERE user_id = ?");
-            $count_orders->execute([$user_id]);
-         ?>
-         <a href="orders.php">orders<span>(<?= $count_orders->rowCount(); ?>)</span></a>
+         <a href="orders.php">orders</a>
          <a href="about.php">about</a>
          <a href="contact.php">messages</a>
       </nav>

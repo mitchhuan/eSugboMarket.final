@@ -76,23 +76,22 @@ if (isset($_POST['submit'])) {
             $hashedPassword = password_hash($pass, PASSWORD_DEFAULT);
         
             // Insert user information into the database
-            $insert = $conn->prepare("INSERT INTO `users` (name, email, password, number, image) VALUES (?, ?, ?, ?, ?)");
-            $insert->execute([$name, $email, $hashedPassword, $number, $image]);
+            $insert = $conn->prepare("INSERT INTO `users` (name, email, password, number, image, user_type) VALUES (?, ?, ?, ?, ?, ?)");
+            $insert->execute([$name, $email, $hashedPassword, $number, $image, 'ucour']); // Set user_type to 'ucour'
 
-            // Get the newly inserted user's ID
-            $user_id = $conn->lastInsertId();
 
             // Insert document information into the database
             foreach ($documents as $document) {
-                $insertDocument = $conn->prepare("INSERT INTO `documents` (user_id, document_name, document_path) VALUES (?, ?, ?)");
-                $insertDocument->execute([$user_id, $document['name'], $document['path']]);
+                $insertDocument = $conn->prepare("INSERT INTO `documents` (courier_id, document_name, document_path) VALUES (?, ?, ?)");
+                $insertDocument->execute([$courier_id, $document['name'], $document['path']]);
 
             }
 
-            // Redirect to the courier page with cour_id parameter
+            // Redirect to the courier page with user_id parameter
+            $user_id = $conn->lastInsertId();
             session_start();
             $_SESSION['user_id'] = $user_id;
-            header('Location: courier_page.php');
+            header('Location: login.php');
             exit;
         }
     }
@@ -145,6 +144,7 @@ if(isset($message)){
       <input type="password" name="pass" class="box" placeholder="Enter your password" required>
       <input type="password" name="cpass" class="box" placeholder="Confirm your password" required>
       <label for="documents">Upload Documents for Verification:</label>
+      <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
       <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
       <input type="submit" value="Register Now" class="btn" name="submit">
       <p>Already have an account? <a href="login.php">Login now</a></p>

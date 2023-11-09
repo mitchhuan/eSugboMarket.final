@@ -10,23 +10,13 @@ if(!isset($cour_id)){
    header('location:login.php');
 };
 
-// if(isset($_POST['update_order'])){
-
-//    $order_id = $_POST['order_id'];
-//    $update_payment = $_POST['update_payment'];
-//    $update_payment = filter_var($update_payment, FILTER_SANITIZE_STRING);
-//    $update_orders = $conn->prepare("UPDATE `orders` SET payment_status = ? WHERE id = ?");
-//    $update_orders->execute([$update_payment, $order_id]);
-//    $message[] = 'payment has been updated!';
-
-// };
 
 if(isset($_GET['delete'])){
 
    $delete_id = $_GET['delete'];
-   $delete_orders = $conn->prepare("DELETE FROM `orders` WHERE id = ?");
+   $delete_orders = $conn->prepare("DELETE FROM `orders` WHERE order_id = ?");
    $delete_orders->execute([$delete_id]);
-   header('location:admin_orders.php');
+   header('location:courier_completedorders.php');
 
 }
 
@@ -38,7 +28,7 @@ if(isset($_GET['delete'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>completed orders</title>
+   <title>Completed Orders</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
@@ -74,17 +64,9 @@ if(isset($_GET['delete'])){
          <p> total products : <span><?= $fetch_orders['total_products']; ?></span> </p>
          <p> total price : <span>₱<?= $fetch_orders['total_price']; ?></span> </p>
          <p> payment method : <span><?= $fetch_orders['method']; ?></span> </p>
-         <form action="" method="POST">
-            <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id']; ?>">
-            <select name="update_payment" class="drop-down">
-               <option value="" selected disabled><?= $fetch_orders['payment_status']; ?></option>
-               <option value="intransit">in transit</option>
-               <option value="order picked up">order picked up</option>
-               <option value="about to deliver">about to deliver</option>
-               <option value="completed">completed</option>
-            </select>
+         <p> status : <span><?= $fetch_orders['payment_status']; ?></span> </p>
             <div class="flex-btn">
-               <a href="courier_orders.php?delete=<?= $fetch_orders['order_id']; ?>" class="delete-btn" onclick="return confirm('delete this order?');">delete</a>
+               <a href="courier_completedorders.php?delete=<?= $fetch_orders['order_id']; ?>" class="delete-btn" onclick="return confirm('delete this order?');">delete</a>
             </div>
          </form>
       </div>

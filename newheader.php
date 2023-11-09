@@ -9,7 +9,7 @@
          <a href="newshop.php">shop</a>
          <a href="newabout.php">about</a>
          <a href="newcontact.php">contact</a>
-         <a href="map.php">tour</a>
+         <a href="newmap.php">tour</a>
       </nav>
 
       <div class="icons">

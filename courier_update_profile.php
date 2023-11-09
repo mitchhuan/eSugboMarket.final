@@ -16,6 +16,8 @@ if (isset($_POST['update_profile'])) {
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $email = $_POST['email'];
     $email = filter_var($email, FILTER_SANITIZE_STRING);
+    $number = $_POST['number'];
+    $number = filter_var($number, FILTER_SANITIZE_STRING);
 
     // Check if the email is a valid email format
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -28,10 +30,15 @@ if (isset($_POST['update_profile'])) {
         $message[] = 'Email is already in use.';
     }
 
+    // Check if the phone number is 11 digits
+    if (strlen($number) !== 11) {
+        $message[] = 'Phone number must have exactly 11 digits.';
+    }
+
     if (empty($message)) {
         // Email and phone number are valid, so proceed with the update.
-        $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ? WHERE id = ?");
-        $update_profile->execute([$name, $email, $cour_id]);
+        $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ?, number = ? WHERE id = ?");
+        $update_profile->execute([$name, $email, $number, $cour_id]);
 
         // Check if the username, email, or phone number was updated and show messages accordingly.
         $updatedFields = array();
@@ -45,6 +52,7 @@ if (isset($_POST['update_profile'])) {
         }
     }
 }
+
 
 if (isset($_POST['update_pass'])) {
     $old_pass = $_POST['old_pass'];
@@ -156,6 +164,8 @@ if (isset($_POST['delete_user'])) {
                <span>update pic :</span>
                <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box">
                <input type="hidden" name="old_image" value="<?= $fetch_profile['image']; ?>">
+               <span>phone number:</span>
+               <input type="number" name="number" value="<?= $fetch_profile['number']; ?>" placeholder="update number" required class="box">
             </div>
             <div class="inputBox">
             <input type="hidden" name="update_pass" value="<?= $fetch_profile['password']; ?>">

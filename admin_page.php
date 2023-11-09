@@ -132,6 +132,28 @@ if(!isset($admin_id)){
       <a href="admin_contacts.php" class="btn">see messages</a>
       </div>
 
+      <div class="box">
+      <?php
+         $select_couriers = $conn->prepare("SELECT * FROM users WHERE user_type = ?");
+         $select_couriers->execute(['courier']);
+         $number_of_couriers = $select_couriers->rowCount();
+      ?>
+      <h3><?= $number_of_couriers; ?></h3>
+      <p>courier accounts</p>
+      <a href="admin_couriers.php" class="btn">see accounts</a>
+      </div>
+
+      <div class="box">
+      <?php
+         $select_uncouriers = $conn->prepare("SELECT * FROM users WHERE user_type = ?");
+         $select_uncouriers->execute(['ucour']);
+         $number_of_uncouriers = $select_uncouriers->rowCount();
+      ?>
+      <h3><?= $number_of_uncouriers; ?></h3>
+      <p>pending couriers</p>
+      <a href="admin_uncouriers.php" class="btn">see accounts</a>
+      </div>
+
    </div>
 
 </section>

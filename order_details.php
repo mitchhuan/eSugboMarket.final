@@ -64,6 +64,7 @@ if (isset($_GET['order_id'])) {
    ?>
 
 <div class="box">
+   <p> order taken by: <span>Courier no. <?= $fetch_orders['courier_id']; ?></span> </p>
    <p> order id: <span><?= $fetch_orders['transaction_id']; ?></span> </p>
    <p> placed on : <span><?= $fetch_orders['placed_on']; ?></span> </p>
    <p> name : <span><?= $fetch_orders['name']; ?></span> </p>
