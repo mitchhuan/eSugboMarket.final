@@ -108,6 +108,17 @@ if(!isset($admin_id)){
       <p>admin accounts</p>
       <a href="admin_admins.php" class="btn">see accounts</a>
       </div>
+      
+      <div class="box">
+      <?php
+         $select_couriers = $conn->prepare("SELECT * FROM `users` WHERE user_type = ?");
+         $select_couriers->execute(['courier']);
+         $number_of_couriers = $select_couriers->rowCount();
+      ?>
+      <h3><?= $number_of_couriers; ?></h3>
+      <p>courier accounts</p>
+      <a href="admin_couriers.php" class="btn">see accounts</a>
+      </div>
 
       <div class="box">
       <?php

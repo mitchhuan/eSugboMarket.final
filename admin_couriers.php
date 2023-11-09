@@ -47,7 +47,7 @@ if(isset($_GET['delete'])){
    <div class="box-container">
 
       <?php
-         $select_users = $conn->prepare("SELECT * FROM users WHERE user_type='admin'");
+         $select_users = $conn->prepare("SELECT * FROM users WHERE user_type='courier'");
          $select_users->execute();
          while($fetch_users = $select_users->fetch(PDO::FETCH_ASSOC)){
       ?>
@@ -57,7 +57,7 @@ if(isset($_GET['delete'])){
          <p> username : <span><?= $fetch_users['name']; ?></span></p>
          <p> email : <span><?= $fetch_users['email']; ?></span></p>
          <p> user type : <span style=" color:<?php if($fetch_users['user_type'] == 'admin'){ echo 'orange'; }; ?>"><?= $fetch_users['user_type']; ?></span></p>
-         <a href="admin_users.php?delete=<?= $fetch_users['id']; ?>" onclick="return confirm('delete this user?');" class="delete-btn">delete</a>
+         <a href="admin_couriers.php?delete=<?= $fetch_users['id']; ?>" onclick="return confirm('delete this user?');" class="delete-btn">delete</a>
       </div>
       <?php
       }
