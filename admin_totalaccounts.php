@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -18,7 +18,7 @@ if(isset($_GET['delete'])){
    header('location:admin_totalaccounts.php');
 
 }
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +27,7 @@ if(isset($_GET['delete'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>users</title>
+   <title>Total Accounts</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
@@ -48,8 +48,8 @@ if(isset($_GET['delete'])){
    <div class="box-container">
 
       <?php
-         $select_users = $conn->prepare("SELECT * FROM users");
-         $select_users->execute();
+         $select_users = $conn->prepare("SELECT * FROM `users` WHERE user_type != ?");
+         $select_users->execute(['admin']);
          while($fetch_users = $select_users->fetch(PDO::FETCH_ASSOC)){
       ?>
       <div class="box">

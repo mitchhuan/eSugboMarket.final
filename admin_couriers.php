@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -18,7 +18,7 @@ if(isset($_GET['delete'])){
    header('location:admin_admins.php');
 
 }
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +27,8 @@ if(isset($_GET['delete'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>users</title>
+   <title>Courier Users</title>
+   <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
@@ -42,7 +43,7 @@ if(isset($_GET['delete'])){
 
 <section class="user-accounts">
 
-   <h1 class="title">user accounts</h1>
+   <h1 class="title">Courier accounts</h1>
 
    <div class="box-container">
 

@@ -58,7 +58,7 @@ if(isset($_POST['send'])){
 
    <div class="box">
       <h3>Contact Us!</h3>
-      <p>If you have any suggestions or complaints, please don't hesitate to contact us. 
+      <p>If you have any suggestions or complaints or questions, please don't hesitate to contact us. 
          Your feedback is important to us.</p>
    </div>
 </div>
@@ -83,7 +83,7 @@ if(isset($_POST['send'])){
 
 
 
-<?php include 'footer.php'; ?>
+<?php include 'newfooter.php'; ?>
 
 <script src="js/script.js"></script>
 

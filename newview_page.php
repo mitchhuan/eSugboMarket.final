@@ -62,7 +62,7 @@
 
 
 
-<?php include 'footer.php'; ?>
+<?php include 'newfooter.php'; ?>
 
 <script src="js/script.js"></script>
 

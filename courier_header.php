@@ -1,5 +1,4 @@
 <?php
-
 if(isset($message)){
    foreach($message as $message){
       echo '
@@ -11,6 +10,10 @@ if(isset($message)){
    }
 }
 
+$select_courier = $conn->prepare("SELECT user_type FROM `users` WHERE id = ?");
+$select_courier->execute([$cour_id]);
+$courier = $select_courier->fetch(PDO::FETCH_ASSOC);
+ob_end_flush();
 ?>
 
 
@@ -22,7 +25,7 @@ if(isset($message)){
 
       <nav class="navbar">
          <a href="courier_page.php">home</a>
-         <a href="courier_orders.php">orders</a>
+         <?php if ($courier['user_type'] === 'cour') echo '<a href="courier_orders.php">orders</a>';?>
       </nav>
 
       <div class="icons">

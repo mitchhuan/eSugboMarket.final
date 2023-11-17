@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -18,9 +18,8 @@ if(isset($_GET['delete'])){
    header('location:admin_users.php');
 
 }
-
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

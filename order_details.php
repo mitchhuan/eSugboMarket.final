@@ -1,4 +1,5 @@
 <?php
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -25,9 +26,8 @@ if (isset($_GET['order_id'])) {
    echo '<p class="empty">Order ID not specified.</p>';
 }
 
-
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

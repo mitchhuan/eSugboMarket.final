@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -64,16 +64,15 @@ if(isset($_POST['order'])){
    }
 
 }
-
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>checkout</title>
+   <title>Checkout</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
@@ -112,7 +111,7 @@ if(isset($_POST['order'])){
 
    <form action="" method="POST">
 
-      <h3>place your order</h3>
+      <h3>Place your order</h3>
 
       <div class="flex">
          <div class="inputBox">
@@ -155,7 +154,7 @@ if(isset($_POST['order'])){
       </div>
       <h2>*time to deliver may take 40mins+</h2>
       <h2>**with additional delivery fee</h2>
-      <h2>***no refunds</h2>
+      <h2>***no cancellations</h2>
 
       <input type="submit" name="order" class="btn <?= ($cart_grand_total > 1)?'':'disabled'; ?>" value="place order">
 

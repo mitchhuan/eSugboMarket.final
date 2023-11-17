@@ -66,7 +66,7 @@ session_start();
 
       <a href="newcategory.php?category=Drygoods and grains">
       <div class="box">
-         <img src="images/cat-3.png" alt="">
+         <img src="images/rice.png" alt="">
          <h3>Dry goods and grains</h3>
       </div>
       </a>
@@ -92,23 +92,23 @@ session_start();
       </div>
       </a>
 
-      <a href="newcategory.php?category=clothing and apparel">
+      <a href="newcategory.php?category=animal foods and products">
       <div class="box">
-         <img src="images/clothing.png" alt="">
-         <h3>Clothing and apparel</h3>
+         <img src="images/pellets.png" alt="">
+         <h3>Animal Foods and Products</h3>
       </div>
       </a>
 
-      <a href="newcategory.php?category=footwear and accessories">
+      <a href="newcategory.php?category=flowers and ornaments">
       <div class="box">
-         <img src="images/footwear.png" alt="">
-         <h3>Footwear and accessories</h3>
+         <img src="images/flowers.png" alt="">
+         <h3>Flowers and Ornaments</h3>
       </div>
       </a>
 
       <a href="newcategory.php?category=handicrafts and souvenirs">
       <div class="box">
-         <img src="images/souvenir.png" alt="">
+         <img src="images/craft.png" alt="">
          <h3>Handicrafts and souvenirs</h3>
       </div>
       </a>
@@ -132,38 +132,38 @@ session_start();
    <div class="box-container">
 
    <?php
-      $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 8");
-      $select_products->execute();
-      if($select_products->rowCount() > 0){
-         while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
-   ?>
-   <form action="" class="box" method="POST">
-      <a href="newview_page.php?pid=<?= $fetch_products['id']; ?>">
-      <div class="price">₱<span><?= $fetch_products['price']; ?></span></div>
-      <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
-      <div class="name"><?= $fetch_products['name']; ?></div>
-      <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
-      <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
-      <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
-      <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
-      </a>
-      <input type="number" min="1" value="1" name="p_qty" class="qty">
-      <a href="login.php" class="option-btn">Add to Wishlist</a>
-      <a href="login.php" class="btn">Add to Cart</a>
-    
-   </form>
-   <?php
-      }
-   }else{
-      echo '<p class="empty">no products added yet!</p>';
-   }
-   ?>
+    $select_products = $conn->prepare("SELECT * FROM `products` ORDER BY id DESC LIMIT 8");
+    $select_products->execute();
+    if($select_products->rowCount() > 0){
+        while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
+?>
+    <form action="" class="box" method="POST">
+        <a href="newview_page.php?pid=<?= $fetch_products['id']; ?>">
+            <div class="price">₱<span><?= $fetch_products['price']; ?></span></div>
+            <img src="uploaded_img/<?= $fetch_products['image']; ?>" alt="">
+            <div class="name"><?= $fetch_products['name']; ?></div>
+            <input type="hidden" name="pid" value="<?= $fetch_products['id']; ?>">
+            <input type="hidden" name="p_name" value="<?= $fetch_products['name']; ?>">
+            <input type="hidden" name="p_price" value="<?= $fetch_products['price']; ?>">
+            <input type="hidden" name="p_image" value="<?= $fetch_products['image']; ?>">
+        </a>
+        <input type="number" min="1" value="1" name="p_qty" class="qty">
+        <a href="login.php" class="option-btn">Add to Wishlist</a>
+        <a href="login.php" class="btn">Add to Cart</a>
+    </form>
+<?php
+        }
+    } else {
+        echo '<p class="empty">No products added yet!</p>';
+    }
+?>
+
 
    </div>
 
 </section>
 
-<?php include 'footer.php'; ?>
+<?php include 'newfooter.php'; ?>
 
 <script src="js/script.js"></script>
 

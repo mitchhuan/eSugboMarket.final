@@ -1,9 +1,16 @@
 <?php
+ob_start();
 @include 'config.php';
 
 session_start();
 
 $cour_id = $_SESSION['cour_id'];
+
+if (!isset($cour_id)) {
+    // If neither cour_id nor ucour_id is set, redirect to login
+    header('Location: login.php');
+    exit;
+}
 
    $select_courier = $conn->prepare("SELECT user_type FROM `users` WHERE id = ?");
    $select_courier->execute([$cour_id]);
@@ -11,18 +18,20 @@ $cour_id = $_SESSION['cour_id'];
 
    if ($courier['user_type'] !== 'cour') {
       // If the user is not a courier, display an error message
-      $message [] = "You do not have access to this page. Only approved couriers can use courier privileges.
-       Your courier account is pending approval. You will have access to courier privileges once approved by the admin. 
+      $message [] = "You do not have access to this page yet. Only approved couriers can use courier privileges.
+       Your courier account has a pending approval. 
+       You will have access to courier privileges once approved by the admin.
        Please wait for at least 24 to 72 hours. Thank you!";
    }
 
+   
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE,initial-scale=1.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Courier Page</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
@@ -46,8 +55,8 @@ $cour_id = $_SESSION['cour_id'];
       <?php
          if ($courier['user_type'] === 'cour') {
             $total_completed = 0;
-            $select_completed = $conn->prepare("SELECT * FROM `orders` WHERE payment_status = ?");
-            $select_completed->execute(['completed']);
+            $select_completed = $conn->prepare("SELECT * FROM `orders` WHERE payment_status = ? AND courier_id = ?");
+            $select_completed->execute(['completed', $cour_id]);
             while($fetch_completed = $select_completed->fetch(PDO::FETCH_ASSOC)){
                $total_completed += $fetch_completed['total_price'];
             }
@@ -61,7 +70,7 @@ $cour_id = $_SESSION['cour_id'];
       <div class="box">
       <?php
          if ($courier['user_type'] === 'cour') {
-            $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE payment_status != 'completed'");
+            $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE payment_status != 'completed' AND courier_id IS NULL");
             $select_orders->execute();
             $number_of_orders = $select_orders->rowCount();
             echo '<h3>' . $number_of_orders . '</h3>';

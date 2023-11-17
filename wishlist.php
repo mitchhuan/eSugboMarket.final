@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -61,9 +61,8 @@ if(isset($_GET['delete_all'])){
    header('location:wishlist.php');
 
 }
-
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>

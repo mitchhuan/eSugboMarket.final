@@ -1,4 +1,5 @@
 <?php
+@include'config.php';
 
 if(isset($message)){
    foreach($message as $message){
@@ -10,9 +11,7 @@ if(isset($message)){
       ';
    }
 }
-
 ?>
-
 <header class="header">
 
    <div class="flex">
@@ -25,6 +24,7 @@ if(isset($message)){
          <a href="orders.php">orders</a>
          <a href="about.php">about</a>
          <a href="contact.php">messages</a>
+         <a href="map.php">tour</a>
       </nav>
 
       <div class="icons">

@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -8,6 +8,7 @@ $user_id = $_SESSION['user_id'];
 
 if(!isset($user_id)){
    header('location:login.php');
+   exit;
 };
 
 if(isset($_POST['add_to_wishlist'])){
@@ -73,9 +74,8 @@ if(isset($_POST['add_to_cart'])){
    }
 
 }
-
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,19 +121,22 @@ if(isset($_POST['add_to_cart'])){
       <div class="box">
          <img src="images/cat-1.png" alt="">
          <h3>Fresh fruits and vegetables</h3>
+
       </div>
       </a>
       
+
       <a href="category.php?category=poultry and meat">
       <div class="box">
          <img src="images/cat-2.png" alt="">
          <h3>Poultry and meat products</h3>
+
       </div>
       </a>
 
       <a href="category.php?category=Drygoods and grains">
       <div class="box">
-         <img src="images/cat-3.png" alt="">
+         <img src="images/rice.png" alt="">
          <h3>Dry goods and grains</h3>
       </div>
       </a>
@@ -159,23 +162,23 @@ if(isset($_POST['add_to_cart'])){
       </div>
       </a>
 
-      <a href="category.php?category=clothing and apparel">
+      <a href="category.php?category=animal foods and products">
       <div class="box">
-         <img src="images/clothing.png" alt="">
-         <h3>Clothing and apparel</h3>
+         <img src="images/pellets.png" alt="">
+         <h3>Animal Foods and Products</h3>
       </div>
       </a>
 
-      <a href="category.php?category=footwear and accessories">
+      <a href="category.php?category=flowers and ornaments">
       <div class="box">
-         <img src="images/footwear.png" alt="">
-         <h3>Footwear and accessories</h3>
+         <img src="images/flowers.png" alt="">
+         <h3>Flowers and Ornaments</h3>
       </div>
       </a>
 
       <a href="category.php?category=handicrafts and souvenirs">
       <div class="box">
-         <img src="images/souvenir.png" alt="">
+         <img src="images/craft.png" alt="">
          <h3>Handicrafts and souvenirs</h3>
       </div>
       </a>
@@ -198,10 +201,10 @@ if(isset($_POST['add_to_cart'])){
    <div class="box-container" >
 
    <?php
-      $select_products = $conn->prepare("SELECT * FROM `products` LIMIT 8");
-      $select_products->execute();
-      if($select_products->rowCount() > 0){
-         while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
+    $select_products = $conn->prepare("SELECT * FROM `products` ORDER BY id DESC LIMIT 8");
+    $select_products->execute();
+    if($select_products->rowCount() > 0){
+        while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
    ?>
    <form action="" class="box" method="POST">
       <a href="view_page.php?pid=<?= $fetch_products['id']; ?>">

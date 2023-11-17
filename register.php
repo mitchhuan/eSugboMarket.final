@@ -1,17 +1,6 @@
 <?php
 include 'config.php';
 
-if(isset($message)){
-    foreach($message as $message){
-       echo '
-       <div class="message">
-          <span>'.$message.'</span>
-          <i class="fas fa-times" onclick="this.parentElement.remove();"></i>
-       </div>
-       ';
-    }
- }
- 
 $name = '';
 $email = '';
 $number = '';
@@ -20,7 +9,7 @@ if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $email = $_POST['email'];
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    $email = filter_var($email, FILTER_SANITIZE_STRING);
     $number = $_POST['number'];
     $number = filter_var($number, FILTER_SANITIZE_STRING);
     $pass = $_POST['pass'];
@@ -34,9 +23,11 @@ if (isset($_POST['submit'])) {
     // Regular expression to validate a phone number with 11 digits
     $phoneNumberRegex = '/^\d{11}$/';
 
-    if (!preg_match($phoneNumberRegex, $number)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message[] = 'Invalid email address.'; 
+    }elseif (!preg_match($phoneNumberRegex, $number)) {
         $message[] = 'Phone number must have 11 digits.';
-    } elseif (!preg_match($passwordRegex, $pass)) {
+    }elseif (!preg_match($passwordRegex, $pass)) {
         $message[] = 'Password must have at least 8 characters with at least one number';
         // Clear the password fields on error
         $pass = $cpass = '';
@@ -82,7 +73,7 @@ if (isset($_POST['submit'])) {
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>register</title>
+   <title>Register</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->

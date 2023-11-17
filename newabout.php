@@ -27,7 +27,7 @@
          <h3>why choose us?</h3>
          <p>Save yourself the trouble of navigating busy markets. You can browse a wide variety of products from the comfort of your home with eSugboMarket. 
             Shop whenever and wherever you want, without having to worry about parking, long lines, or restricted hours.</p>
-         <a href="#contact" class="btn">contact us</a>
+         <a href="newcontact.php" class="btn">contact us</a>
       </div>
 
       <div class="box">
@@ -62,7 +62,7 @@
 
 
 
-<?php include 'footer.php'; ?>
+<?php include 'newfooter.php'; ?>
 
 <script src="js/script.js"></script>
 

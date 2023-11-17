@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -29,7 +29,7 @@ if(isset($_GET['delete'])){
    header('location:admin_orders.php');
 
 }
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +38,7 @@ if(isset($_GET['delete'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>pending orders</title>
+   <title>Pending Orders</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
@@ -74,20 +74,7 @@ if(isset($_GET['delete'])){
          <p> total products : <span><?= $fetch_orders['total_products']; ?></span> </p>
          <p> total price : <span>₱<?= $fetch_orders['total_price']; ?></span> </p>
          <p> payment method : <span><?= $fetch_orders['method']; ?></span> </p>
-         <form action="" method="POST">
-            <input type="hidden" name="order_id" value="<?= $fetch_orders['order_id']; ?>">
-            <select name="update_payment" class="drop-down">
-               <option value="" selected disabled><?= $fetch_orders['payment_status']; ?></option>
-               <option value="intransit">in transit</option>
-               <option value="order picked up">order picked up</option>
-               <option value="about to deliver">about to deliver</option>
-               <option value="completed">completed</option>
-            </select>
-            <div class="flex-btn">
-            <input type="submit" name="update_order" class="option-btn" value="update">
-               <a href="admin_orders.php?delete=<?= $fetch_orders['order_id']; ?>" class="delete-btn" onclick="return confirm('delete this order?');">delete</a>
-            </div>
-         </form>
+         <p> status : <span><?= $fetch_orders['payment_status']; ?></span> </p>
       </div>
       <?php
          }

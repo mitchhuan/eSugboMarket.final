@@ -90,7 +90,7 @@ if(isset($_POST['add_to_cart'])){
 
 <section class="p-category">
 
-   <a href="newcategory.php?category=fruits and vegetable">fruits and vegetables</a>
+   <a href="newcategory.php?category=fruits and vegetables">fruits and vegetables</a>
    <a href="newcategory.php?category=poultry and meat">poultry and meat</a>
    <a href="newcategory.php?category=fresh seafood">fresh seafood</a>
    <a href="newcategory.php?category=spices and condiments">spices and condiments</a>
@@ -145,7 +145,7 @@ if(isset($_POST['add_to_cart'])){
 
 
 
-<?php include 'footer.php'; ?>
+<?php include 'newfooter.php'; ?>
 
 <script src="js/script.js"></script>
 

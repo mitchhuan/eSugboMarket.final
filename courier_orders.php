@@ -1,4 +1,5 @@
 <?php
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -39,9 +40,9 @@ if (isset($_POST['accept_order'])) {
       $orderDetails = $orderDetailsQuery->fetch(PDO::FETCH_ASSOC);
 
       $messageContent = "Your order has been accepted by the courier. \n";
-      $messageContent .= "Address: {$orderDetails['address']}\n";
-      $messageContent .= "Total Products: {$orderDetails['total_products']}\n";
-      $messageContent .= "Time of Order: {$orderDetails['time_of_order']}\n";
+      $messageContent = "Address: {$orderDetails['address']}\n";
+      $messageContent = "Total Products: {$orderDetails['total_products']}\n";
+      $messageContent = "Time of Order: {$orderDetails['time_of_order']}\n";
       // ... (include other details as needed)
 
       // Insert the new message into the 'messages' table
@@ -53,13 +54,13 @@ if (isset($_POST['accept_order'])) {
       $message[] = 'This order has already been accepted by another courier.';
    }
 }
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
-   <meta http-equiv="X-UA-Compatible" content="IE,initial-scale=1.0">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
    <title>Courier Orders</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 

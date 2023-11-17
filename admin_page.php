@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -9,7 +9,7 @@ $admin_id = $_SESSION['admin_id'];
 if(!isset($admin_id)){
    header('location:login.php');
 }
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -18,7 +18,7 @@ if(!isset($admin_id)){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>admin page</title>
+   <title>Admin Page</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
@@ -68,7 +68,7 @@ if(!isset($admin_id)){
 
       <div class="box">
       <?php
-         $select_orders = $conn->prepare("SELECT * FROM `orders`");
+         $select_orders = $conn->prepare("SELECT * FROM orders WHERE payment_status !='completed'");
          $select_orders->execute();
          $number_of_orders = $select_orders->rowCount();
       ?>
@@ -88,32 +88,11 @@ if(!isset($admin_id)){
       <a href="admin_products.php" class="btn">see products</a>
       </div>
 
-      <div class="box">
-      <?php
-         $select_users = $conn->prepare("SELECT * FROM `users` WHERE user_type = ?");
-         $select_users->execute(['user']);
-         $number_of_users = $select_users->rowCount();
-      ?>
-      <h3><?= $number_of_users; ?></h3>
-      <p>user accounts</p>
-      <a href="admin_users.php" class="btn">see accounts</a>
-      </div>
 
       <div class="box">
       <?php
-         $select_admins = $conn->prepare("SELECT * FROM `users` WHERE user_type = ?");
-         $select_admins->execute(['admin']);
-         $number_of_admins = $select_admins->rowCount();
-      ?>
-      <h3><?= $number_of_admins; ?></h3>
-      <p>admin accounts</p>
-      <a href="admin_admins.php" class="btn">see accounts</a>
-      </div>
-
-      <div class="box">
-      <?php
-         $select_accounts = $conn->prepare("SELECT * FROM `users`");
-         $select_accounts->execute();
+         $select_accounts = $conn->prepare("SELECT * FROM `users` WHERE user_type != ?");
+         $select_accounts->execute(['admin']);
          $number_of_accounts = $select_accounts->rowCount();
       ?>
       <h3><?= $number_of_accounts; ?></h3>
@@ -121,21 +100,11 @@ if(!isset($admin_id)){
       <a href="admin_totalaccounts.php" class="btn">see accounts</a>
       </div>
 
-      <div class="box">
-      <?php
-         $select_messages = $conn->prepare("SELECT * FROM `message`");
-         $select_messages->execute();
-         $number_of_messages = $select_messages->rowCount();
-      ?>
-      <h3><?= $number_of_messages; ?></h3>
-      <p>total messages</p>
-      <a href="admin_contacts.php" class="btn">see messages</a>
-      </div>
 
       <div class="box">
       <?php
          $select_couriers = $conn->prepare("SELECT * FROM users WHERE user_type = ?");
-         $select_couriers->execute(['courier']);
+         $select_couriers->execute(['cour']);
          $number_of_couriers = $select_couriers->rowCount();
       ?>
       <h3><?= $number_of_couriers; ?></h3>
@@ -152,6 +121,17 @@ if(!isset($admin_id)){
       <h3><?= $number_of_uncouriers; ?></h3>
       <p>pending couriers</p>
       <a href="admin_uncouriers.php" class="btn">see accounts</a>
+      </div>
+
+      <div class="box">
+      <?php
+         $select_messages = $conn->prepare("SELECT * FROM `message`");
+         $select_messages->execute();
+         $number_of_messages = $select_messages->rowCount();
+      ?>
+      <h3><?= $number_of_messages; ?></h3>
+      <p>total messages</p>
+      <a href="admin_contacts.php" class="btn">see messages</a>
       </div>
 
    </div>

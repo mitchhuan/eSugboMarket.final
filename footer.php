@@ -7,23 +7,21 @@
          <a href="home.php"> <i class="fas fa-angle-right"></i> home</a>
          <a href="shop.php"> <i class="fas fa-angle-right"></i> shop</a>
          <a href="about.php"> <i class="fas fa-angle-right"></i> about</a>
-         <a href="contact.php"> <i class="fas fa-angle-right"></i> contact</a>
       </div>
 
       <div class="box">
          <h3>extra links</h3>
-         <a href="cart.php"> <i class="fas fa-angle-right"></i> cart</a>
-         <a href="wishlist.php"> <i class="fas fa-angle-right"></i> wishlist</a>
-         <a href="login.php"> <i class="fas fa-angle-right"></i> login</a>
-         <a href="register.php"> <i class="fas fa-angle-right"></i> register</a>
+         <a href="map.php"> <i class="fas fa-angle-right"></i> tour</a>
+         <a href="orders.php"> <i class="fas fa-angle-right"></i> orders</a>
+         <a href="contact.php"> <i class="fas fa-angle-right"></i> messages</a>
       </div>
 
       <div class="box">
          <h3>contact info</h3>
-         <p> <i class="fas fa-phone"></i> +63 917 619 3915 </p>
+         <p> <i class="fas fa-phone"></i> +63 999 123 4567 </p>
          <p> <i class="fas fa-phone"></i> +111-222-3333 </p>
-         <p> <i class="fas fa-envelope"></i> mitchhuan123@gmail.com </p>
-         <p> <i class="fas fa-map-marker-alt"></i> cebu, philippines </p>
+         <p> <i class="fas fa-envelope"></i> eSugboMarket@email.com </p>
+         <p> <i class="fas fa-map-marker-alt"></i> Cebu, Philippines </p>
       </div>
 
       <!-- <div class="box">

@@ -7,7 +7,14 @@
     <title>Animated Step Progress Bar</title>
     <link rel="stylesheet" href="style.css">
 
-    
+    if ($courier['user_type'] !== 'cour') {
+        // If the user is not a courier, display an error message
+        $message [] = "You do not have access to this page. Only approved couriers can use courier privileges.
+         Your courier account has a pending approval. You will have access to courier privileges once approved by the admin.
+         Check your phone for emails or messages from time to time.
+         Please wait for at least 24 to 72 hours. Thank you!";
+     }
+     
     <!-- UniIcon CDN Link  -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>

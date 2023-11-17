@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -31,7 +31,7 @@ if(isset($_POST['update_qty'])){
    $update_qty->execute([$p_qty, $cart_id]);
    $message[] = 'cart quantity updated';
 }
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>

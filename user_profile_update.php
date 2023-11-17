@@ -1,4 +1,5 @@
 <?php
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -33,6 +34,12 @@ if (isset($_POST['update_profile'])) {
     // Check if the phone number is 11 digits
     if (strlen($number) !== 11) {
         $message[] = 'Phone number must have exactly 11 digits.';
+    }
+
+    $phone_check_query = $conn->prepare("SELECT id FROM `users` WHERE number = ? AND id != ?");
+    $phone_check_query->execute([$number, $user_id]);
+    if ($phone_check_query->rowCount() > 0) {
+        $message[] = 'Phone is already in use.';
     }
 
     if (empty($message)) {
@@ -122,18 +129,24 @@ if (!empty($_FILES['image']['name'])) {
 }
 
 if (isset($_POST['delete_user'])) {
-    // ...
+    $user_id = $_SESSION['user_id']; // Assuming you store user_id in the session
 
+    // Perform the deletion from your database, for example:
+    $delete_user = $conn->prepare("DELETE FROM users WHERE id = ?");
+    $delete_user->execute([$user_id]);
+
+    // Optionally, you might want to delete associated data in other tables, if any.
+
+    // Display a message or log the action
     $message[] = 'Your account has been deleted.';
+
+    // Destroy the session and redirect to a new page
     session_destroy();
     header('Location: newhome.php');
     exit;
 }
+ob_end_flush();
 ?>
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -167,7 +180,7 @@ if (isset($_POST['delete_user'])) {
                <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box">
                <input type="hidden" name="old_image" value="<?= $fetch_profile['image']; ?>">
                <span>phone number:</span>
-               <input type="number" name="number" value="<?= $fetch_profile['number']; ?>" placeholder="update number" required class="box">
+               <input type="phone number" name="number" value="<?= $fetch_profile['number']; ?>" placeholder="update number" required class="box">
             </div>
             <div class="inputBox">
             <input type="hidden" name="update_pass" value="<?= $fetch_profile['password']; ?>">

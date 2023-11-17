@@ -1,4 +1,5 @@
 <?php
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -33,6 +34,12 @@ if (isset($_POST['update_profile'])) {
     // Check if the phone number is 11 digits
     if (strlen($number) !== 11) {
         $message[] = 'Phone number must have exactly 11 digits.';
+    }
+
+    $phone_check_query = $conn->prepare("SELECT id FROM `users` WHERE number = ? AND id != ?");
+    $phone_check_query->execute([$number, $cour_id]);
+    if ($phone_check_query->rowCount() > 0) {
+        $message[] = 'Phone is already in use.';
     }
 
     if (empty($message)) {
@@ -123,13 +130,102 @@ if (!empty($_FILES['image']['name'])) {
 }
 
 if (isset($_POST['delete_user'])) {
-    // ...
+    $user_id = $_SESSION['cour_id']; // Assuming you store user_id in the session
 
+    // Perform the deletion from your database, for example:
+    $delete_user = $conn->prepare("DELETE FROM users WHERE id = ?");
+    $delete_user->execute([$user_id]);
+
+    // Optionally, you might want to delete associated data in other tables, if any.
+
+    // Display a message or log the action
     $message[] = 'Your account has been deleted.';
+
+    // Destroy the session and redirect to a new page
     session_destroy();
     header('Location: newhome.php');
     exit;
 }
+
+// Function to delete a document
+if (isset($_GET['delete_document'])) {
+    $document_id = $_GET['delete_document'];
+
+    // Ensure the document belongs to the current courier
+    $check_document = $conn->prepare("SELECT courier_id FROM documents WHERE id = ?");
+    $check_document->execute([$document_id]);
+    $document_courier_id = $check_document->fetchColumn();
+
+    if ($document_courier_id == $cour_id) {
+        // Get document information
+        $get_document_info = $conn->prepare("SELECT document_name FROM documents WHERE id = ?");
+        $get_document_info->execute([$document_id]);
+        $document_info = $get_document_info->fetch(PDO::FETCH_ASSOC);
+        $document_name = $document_info['document_name'];
+
+        // Delete the document from the database
+        $delete_document_query = $conn->prepare("DELETE FROM documents WHERE id = ?");
+        $delete_document_query->execute([$document_id]);
+
+        if ($delete_document_query) {
+            // Delete the document file from the server
+            unlink('document_uploads/' . $document_name);
+
+            // Display a success message
+            $message[] = 'Document deleted successfully!';
+        } else {
+            // Display an error message
+            $message[] = 'Error deleting document. Please try again.';
+        }
+    }
+}
+
+if (isset($_POST['submit_document'])) {
+    $documents = $_FILES['documents'];
+    $num_files = count($documents['name']);
+
+    for ($i = 0; $i < $num_files; $i++) {
+        $document_name = $documents['name'][$i];
+        $document_name = filter_var($document_name, FILTER_SANITIZE_STRING);
+        $document_size = $documents['size'][$i];
+        $document_tmp_name = $documents['tmp_name'][$i];
+
+        // Check if the document size is within limits
+        if ($document_size > 1000000) {
+            $message[] = 'Document size is too large!';
+        } else {
+            // Generate a unique filename
+            $info = pathinfo($document_name);
+            $basename = $info['filename'];
+            $extension = $info['extension'];
+            $counter = 1;
+
+            while (file_exists('document_uploads/' . $document_name)) {
+                $document_name = $basename . '_' . $counter . '.' . $extension;
+                $counter++;
+            }
+
+            // Move the uploaded document to the server
+            move_uploaded_file($document_tmp_name, 'document_uploads/' . $document_name);
+
+            // Add the document to the database
+            $insert_document_query = $conn->prepare("INSERT INTO documents (courier_id, document_name, document_path) VALUES (?, ?, ?)");
+            $insert_document_query->execute([$cour_id, $document_name, 'document_uploads/' . $document_name]);
+
+            if ($insert_document_query) {
+                $message[] = 'Document added successfully!';
+            } else {
+                $message[] = 'Error adding document. Please try again.';
+            }
+        }
+    }
+}
+
+// Retrieve documents related to the user
+$select_documents = $conn->prepare("SELECT * FROM documents WHERE courier_id = ?");
+$select_documents->execute([$cour_id]);
+$documents = $select_documents->fetchAll(PDO::FETCH_ASSOC);
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -165,7 +261,15 @@ if (isset($_POST['delete_user'])) {
                <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box">
                <input type="hidden" name="old_image" value="<?= $fetch_profile['image']; ?>">
                <span>phone number:</span>
-               <input type="number" name="number" value="<?= $fetch_profile['number']; ?>" placeholder="update number" required class="box">
+               <input type="phone number" name="number" value="<?= $fetch_profile['number']; ?>" placeholder="update number" required class="box">
+               <span>files:</span>
+                     <?php foreach ($documents as $document): ?>
+                    <div class="box">
+                        <a href="<?= $document['document_path']; ?>" target="_blank" style="word-wrap: break-word;"><?= $document['document_name']; ?></a>
+                        <a href="?delete_document=<?= $document['id']; ?>" onclick="return confirm('Are you sure you want to delete this document?')" style="color: red;">(Delete)</a>
+                    </div>
+                    <?php endforeach; ?>
+                    <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
             </div>
             <div class="inputBox">
             <input type="hidden" name="update_pass" value="<?= $fetch_profile['password']; ?>">
@@ -178,12 +282,14 @@ if (isset($_POST['delete_user'])) {
             </div>
          </div>
          <div class="flex-btn">
+            <input type="hidden" value="update files" name="submit_document">
             <input type="submit" class="btn" value="update profile" name="update_profile">
             <button class="delete-btn" name="delete_user" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete User</button>
             <a href="courier_page.php" class="option-btn">go back</a>  
          </div>
       </form>
    </section>
+        
    
 <script src="js/script.js"></script>
 </body>

@@ -1,4 +1,5 @@
 <?php
+ob_start();
 // Include the configuration file and start the session
 @include 'config.php';
 session_start();
@@ -126,6 +127,7 @@ if (!$selectedUserId && !empty($recentUsers)) {
     header("Location: courier_contact.php?user_id=$selectedUserId");
     exit;
 }
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>

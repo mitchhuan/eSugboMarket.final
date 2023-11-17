@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -73,7 +73,7 @@ if(isset($_POST['add_to_cart'])){
    }
 
 }
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>

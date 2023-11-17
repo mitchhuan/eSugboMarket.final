@@ -1,5 +1,5 @@
 <?php
-include 'config.php';
+@include 'config.php';
 
 $name = '';
 $email = '';
@@ -9,7 +9,7 @@ if (isset($_POST['submit'])) {
     $name = $_POST['name'];
     $name = filter_var($name, FILTER_SANITIZE_STRING);
     $email = $_POST['email'];
-    $email = filter_var($email, FILTER_VALIDATE_EMAIL);
+    $email = filter_var($email, FILTER_SANITIZE_STRING);
     $number = $_POST['number'];
     $number = filter_var($number, FILTER_SANITIZE_STRING);
     $pass = $_POST['pass'];
@@ -47,8 +47,10 @@ if (isset($_POST['submit'])) {
 
     // Regular expression to validate a phone number with 11 digits
     $phoneNumberRegex = '/^\d{11}$/';
-
-    if (!preg_match($phoneNumberRegex, $number)) {
+    
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $message[] = 'Invalid email address.';
+    } elseif (!preg_match($phoneNumberRegex, $number)) {
         $message[] = 'Phone number must have 11 digits.';
     } elseif (!preg_match($passwordRegex, $pass)) {
         $message[] = 'Password must have at least 8 characters with at least one number';
@@ -79,25 +81,24 @@ if (isset($_POST['submit'])) {
             $insert = $conn->prepare("INSERT INTO `users` (name, email, password, number, image, user_type) VALUES (?, ?, ?, ?, ?, ?)");
             $insert->execute([$name, $email, $hashedPassword, $number, $image, 'ucour']); // Set user_type to 'ucour'
 
+            // Retrieve the courier's user ID
+            $courier_id = $conn->lastInsertId();
 
-            // Insert document information into the database
+            // Insert document information into the database with the associated courier ID
             foreach ($documents as $document) {
                 $insertDocument = $conn->prepare("INSERT INTO `documents` (courier_id, document_name, document_path) VALUES (?, ?, ?)");
                 $insertDocument->execute([$courier_id, $document['name'], $document['path']]);
-
             }
 
             // Redirect to the courier page with user_id parameter
-            $user_id = $conn->lastInsertId();
             session_start();
-            $_SESSION['user_id'] = $user_id;
-            header('Location: login.php');
+            $_SESSION['ucour_id'] = $courier_id;
+            header('Location: courier_page.php');
             exit;
         }
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -143,8 +144,7 @@ if(isset($message)){
       <input type="number" name="number" class="box" placeholder="Enter your number" required value="<?= $number ?>">
       <input type="password" name="pass" class="box" placeholder="Enter your password" required>
       <input type="password" name="cpass" class="box" placeholder="Confirm your password" required>
-      <label for="documents">Upload Documents for Verification:</label>
-      <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
+      <label for="documents">Upload Necessary Documents for Verification:</label>
       <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
       <input type="submit" value="Register Now" class="btn" name="submit">
       <p>Already have an account? <a href="login.php">Login now</a></p>

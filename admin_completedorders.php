@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -27,18 +27,17 @@ if(isset($_GET['delete'])){
    $delete_orders = $conn->prepare("DELETE FROM `orders` WHERE order_id = ?");
    $delete_orders->execute([$delete_id]);
    header('location:admin_orders.php');
-
+   
 }
-
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>completed orders</title>
+   <title>Completed Orders</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->

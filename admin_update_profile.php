@@ -1,4 +1,5 @@
 <?php
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -26,6 +27,12 @@ if (isset($_POST['update_profile'])) {
     $email_check_query->execute([$email, $admin_id]);
     if ($email_check_query->rowCount() > 0) {
         $message[] = 'Email is already in use.';
+    }
+
+    $phone_check_query = $conn->prepare("SELECT id FROM `users` WHERE number = ? AND id != ?");
+    $phone_check_query->execute([$number, $admin_id]);
+    if ($phone_check_query->rowCount() > 0) {
+        $message[] = 'Phone is already in use.';
     }
 
     if (empty($message)) {
@@ -115,13 +122,23 @@ if (!empty($_FILES['image']['name'])) {
 }
 
 if (isset($_POST['delete_user'])) {
-    // ...
+    $user_id = $_SESSION['admin_id']; // Assuming you store user_id in the session
 
+    // Perform the deletion from your database, for example:
+    $delete_user = $conn->prepare("DELETE FROM users WHERE id = ?");
+    $delete_user->execute([$user_id]);
+
+    // Optionally, you might want to delete associated data in other tables, if any.
+
+    // Display a message or log the action
     $message[] = 'Your account has been deleted.';
+
+    // Destroy the session and redirect to a new page
     session_destroy();
     header('Location: newhome.php');
     exit;
 }
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -170,7 +187,7 @@ if (isset($_POST['delete_user'])) {
          <div class="flex-btn">
             <input type="submit" class="btn" value="update profile" name="update_profile">
             <button class="delete-btn" name="delete_user" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete User</button>
-            <a href="home.php" class="option-btn">go back</a>  
+            <a href="admin_page.php" class="option-btn">go back</a>  
          </div>
       </form>
    </section>

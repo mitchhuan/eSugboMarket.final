@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -68,7 +68,7 @@ if(isset($_GET['delete'])){
 
 
 }
-
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>
@@ -77,7 +77,7 @@ if(isset($_GET['delete'])){
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <title>products</title>
+   <title>Products</title>
    <link rel="icon" type="image/x-icon" href="images/title.ico">
 
    <!-- font awesome cdn link  -->
@@ -107,8 +107,8 @@ if(isset($_GET['delete'])){
                <option value="fresh seafood">fresh seafood</option>
                <option value="spices and condiments">spices and condiments</option>
                <option value="local snacks and street food">local snacks and street food</option>
-               <option value="clothing and apparel">clothing and apparel</option>
-               <option value="footwear and accessories">footwear and accessories</option>
+               <option value="animal foods and products">animal foods and products</option>
+               <option value="flowers and ornaments">flowers and ornaments</option>
                <option value="handicrafts and souvenir">handicrafts and souvenir</option>
                <option value="kitchen stuff ">kitchen stuff</option>
          </select>

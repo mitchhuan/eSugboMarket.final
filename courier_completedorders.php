@@ -1,5 +1,5 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
@@ -20,8 +20,8 @@ if(isset($_GET['delete'])){
 
 }
 
+ob_end_flush();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -49,13 +49,12 @@ if(isset($_GET['delete'])){
    <div class="box-container">
 
       <?php
-         $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE payment_status = 'completed'");
-         $select_orders->execute();
+         $select_orders = $conn->prepare("SELECT * FROM `orders` WHERE payment_status = 'completed' AND courier_id = ?");
+         $select_orders->execute([$cour_id]);
          if($select_orders->rowCount() > 0){
             while($fetch_orders = $select_orders->fetch(PDO::FETCH_ASSOC)){
       ?>
       <div class="box">
-         <p> user id : <span><?= $fetch_orders['user_id']; ?></span> </p>
          <p> placed on : <span><?= $fetch_orders['placed_on']; ?></span> </p>
          <p> name : <span><?= $fetch_orders['name']; ?></span> </p>
          <p> email : <span><?= $fetch_orders['email']; ?></span> </p>
