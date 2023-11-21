@@ -13,7 +13,7 @@ if(isset($message)){
 $select_courier = $conn->prepare("SELECT user_type FROM `users` WHERE id = ?");
 $select_courier->execute([$cour_id]);
 $courier = $select_courier->fetch(PDO::FETCH_ASSOC);
-ob_end_flush();
+
 ?>
 
 

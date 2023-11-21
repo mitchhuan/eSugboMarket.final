@@ -43,30 +43,36 @@ if (isset($_POST['update_profile'])) {
     }
 
     if (empty($message)) {
-        // Email and phone number are valid, so proceed with the update.
-        $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ?, number = ? WHERE id = ?");
-        $update_profile->execute([$name, $email, $number, $cour_id]);
+        // Check if any changes have been made before updating
+        $check_profile_query = $conn->prepare("SELECT * FROM `users` WHERE id = ?");
+        $check_profile_query->execute([$cour_id]);
+        $current_profile = $check_profile_query->fetch(PDO::FETCH_ASSOC);
 
-        // Check if the username, email, or phone number was updated and show messages accordingly.
-        $updatedFields = array();
+        if ($current_profile['name'] != $name || $current_profile['email'] != $email || $current_profile['number'] != $number) {
+            // Email and phone number are valid, so proceed with the update.
+            $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ?, number = ? WHERE id = ?");
+            $update_profile->execute([$name, $email, $number, $cour_id]);
 
-        if ($update_profile->rowCount() > 0) {
-            $updatedFields[] = 'Profile';
-        }
+            // Check if the username, email, or phone number was updated and show messages accordingly.
+            $updatedFields = array();
 
-        if (!empty($updatedFields)) {
-            $message[] = implode(', ', $updatedFields) . ' updated successfully!';
+            if ($update_profile->rowCount() > 0) {
+                $updatedFields[] = 'Profile';
+            }
+
+            if (!empty($updatedFields)) {
+                $message[] = implode(', ', $updatedFields) . ' updated successfully!';
+            }
         }
     }
 }
-
 
 if (isset($_POST['update_pass'])) {
     $old_pass = $_POST['old_pass'];
     $update_pass = $_POST['new_pass'];
     $confirm_pass = $_POST['confirm_pass'];
 
-    if (empty($old_pass) || empty($update_pass) || empty($confirm_pass)){
+    if (empty($old_pass) || empty($update_pass) || empty($confirm_pass)) {
     } elseif ($update_pass !== $confirm_pass) {
         $message[] = 'New and confirm passwords do not match.';
     } elseif (strlen($update_pass) < 8 || !preg_match('/\d/', $update_pass)) {
@@ -90,7 +96,6 @@ if (isset($_POST['update_pass'])) {
         }
     }
 }
-
 
 if (!empty($_FILES['image']['name'])) {
     $image = $_FILES['image']['name'];
@@ -184,40 +189,57 @@ if (isset($_POST['submit_document'])) {
     $documents = $_FILES['documents'];
     $num_files = count($documents['name']);
 
-    for ($i = 0; $i < $num_files; $i++) {
-        $document_name = $documents['name'][$i];
-        $document_name = filter_var($document_name, FILTER_SANITIZE_STRING);
-        $document_size = $documents['size'][$i];
-        $document_tmp_name = $documents['tmp_name'][$i];
+    // Check if any files are submitted
+    $filesSubmitted = false;
+    foreach ($documents['name'] as $documentName) {
+        if (!empty($documentName)) {
+            $filesSubmitted = true;
+            break;
+        }
+    }
 
-        // Check if the document size is within limits
-        if ($document_size > 1000000) {
-            $message[] = 'Document size is too large!';
-        } else {
-            // Generate a unique filename
-            $info = pathinfo($document_name);
-            $basename = $info['filename'];
-            $extension = $info['extension'];
-            $counter = 1;
+    if ($filesSubmitted) {
+        for ($i = 0; $i < $num_files; $i++) {
+            $document_name = $documents['name'][$i];
 
-            while (file_exists('document_uploads/' . $document_name)) {
-                $document_name = $basename . '_' . $counter . '.' . $extension;
-                $counter++;
-            }
+            // Check if the document_name is not empty, indicating a file is submitted
+            if (!empty($document_name)) {
+                $document_name = filter_var($document_name, FILTER_SANITIZE_STRING);
+                $document_size = $documents['size'][$i];
+                $document_tmp_name = $documents['tmp_name'][$i];
 
-            // Move the uploaded document to the server
-            move_uploaded_file($document_tmp_name, 'document_uploads/' . $document_name);
+                // Check if the document size is within limits
+                if ($document_size > 1000000) {
+                    $message[] = 'Document size is too large!';
+                } else {
+                    // Generate a unique filename
+                    $info = pathinfo($document_name);
+                    $basename = $info['filename'];
+                    $extension = $info['extension'];
+                    $counter = 1;
 
-            // Add the document to the database
-            $insert_document_query = $conn->prepare("INSERT INTO documents (courier_id, document_name, document_path) VALUES (?, ?, ?)");
-            $insert_document_query->execute([$cour_id, $document_name, 'document_uploads/' . $document_name]);
+                    while (file_exists('document_uploads/' . $document_name)) {
+                        $document_name = $basename . '_' . $counter . '.' . $extension;
+                        $counter++;
+                    }
 
-            if ($insert_document_query) {
-                $message[] = 'Document added successfully!';
-            } else {
-                $message[] = 'Error adding document. Please try again.';
+                    // Move the uploaded document to the server
+                    move_uploaded_file($document_tmp_name, 'document_uploads/' . $document_name);
+
+                    // Add the document to the database
+                    $insert_document_query = $conn->prepare("INSERT INTO documents (courier_id, document_name, document_path) VALUES (?, ?, ?)");
+                    $insert_document_query->execute([$cour_id, $document_name, 'document_uploads/' . $document_name]);
+
+                    if ($insert_document_query) {
+                        $message[] = 'Document added successfully!';
+                    } else {
+                        $message[] = 'Error adding document. Please try again.';
+                    }
+                }
             }
         }
+    } else {
+        $message[] = 'No files submitted for upload.';
     }
 }
 
@@ -227,6 +249,7 @@ $select_documents->execute([$cour_id]);
 $documents = $select_documents->fetchAll(PDO::FETCH_ASSOC);
 ob_end_flush();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -262,14 +285,7 @@ ob_end_flush();
                <input type="hidden" name="old_image" value="<?= $fetch_profile['image']; ?>">
                <span>phone number:</span>
                <input type="phone number" name="number" value="<?= $fetch_profile['number']; ?>" placeholder="update number" required class="box">
-               <span>files:</span>
-                     <?php foreach ($documents as $document): ?>
-                    <div class="box">
-                        <a href="<?= $document['document_path']; ?>" target="_blank" style="word-wrap: break-word;"><?= $document['document_name']; ?></a>
-                        <a href="?delete_document=<?= $document['id']; ?>" onclick="return confirm('Are you sure you want to delete this document?')" style="color: red;">(Delete)</a>
-                    </div>
-                    <?php endforeach; ?>
-                    <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
+               
             </div>
             <div class="inputBox">
             <input type="hidden" name="update_pass" value="<?= $fetch_profile['password']; ?>">
@@ -280,9 +296,19 @@ ob_end_flush();
             <span>confirm password :</span>
             <input type="password" name="confirm_pass" placeholder="confirm new password" class="box">
             </div>
+            <div class="inputBox">
+            <span>files:</span>
+                     <?php foreach ($documents as $document): ?>
+                    <div class="box">
+                        <a href="<?= $document['document_path']; ?>" target="_blank" style="word-wrap: break-word;"><?= $document['document_name']; ?></a>
+                        <a href="?delete_document=<?= $document['id']; ?>" onclick="return confirm('Are you sure you want to delete this document?')" style="color: red;">(Delete)</a>
+                    </div>
+                    <?php endforeach; ?>
+                    <input type="file" name="documents[]" accept="application/pdf" class="box" multiple>
+                    <input type="submit" class="btn" value="add files" name="submit_document">
+            </div>
          </div>
          <div class="flex-btn">
-            <input type="hidden" value="update files" name="submit_document">
             <input type="submit" class="btn" value="update profile" name="update_profile">
             <button class="delete-btn" name="delete_user" onclick="return confirm('Are you sure you want to delete your account? This action cannot be undone.')">Delete User</button>
             <a href="courier_page.php" class="option-btn">go back</a>  

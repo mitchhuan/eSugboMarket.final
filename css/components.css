@@ -344,7 +344,7 @@ section{
 }
 
 .update-profile form{
-   max-width: 70rem;
+   max-width: 90rem;
    margin: 0 auto;
    background-color: var(--white);
    box-shadow: var(--box-shadow);
