@@ -7,14 +7,58 @@
     <title>Animated Step Progress Bar</title>
     <link rel="stylesheet" href="style.css">
 
-    if ($courier['user_type'] !== 'cour') {
-        // If the user is not a courier, display an error message
-        $message [] = "You do not have access to this page. Only approved couriers can use courier privileges.
-         Your courier account has a pending approval. You will have access to courier privileges once approved by the admin.
-         Check your phone for emails or messages from time to time.
-         Please wait for at least 24 to 72 hours. Thank you!";
-     }
-     
+    if (isset($_POST['delete_user'])) {
+        $user_id = $_SESSION['cour_id']; // Assuming you store user_id in the session
+    
+        // Perform the deletion from your database, for example:
+        $delete_user = $conn->prepare("DELETE FROM users WHERE id = ?");
+        $delete_user->execute([$user_id]);
+    
+        // Optionally, you might want to delete associated data in other tables, if any.
+    
+        // Display a message or log the action
+        $message[] = 'Your account has been deleted.';
+    
+        // Destroy the session and redirect to a new page
+        session_destroy();
+        header('Location: newhome.php');
+        exit;
+    }
+    
+    // Function to delete a document
+    if (isset($_GET['delete_document'])) {
+        $document_id = $_GET['delete_document'];
+    
+        // Ensure the document belongs to the current courier
+        $check_document = $conn->prepare("SELECT courier_id FROM documents WHERE id = ?");
+        $check_document->execute([$document_id]);
+        $document_courier_id = $check_document->fetchColumn();
+    
+        if ($document_courier_id == $cour_id) {
+            // Get document information
+            $get_document_info = $conn->prepare("SELECT document_name FROM documents WHERE id = ?");
+            $get_document_info->execute([$document_id]);
+            $document_info = $get_document_info->fetch(PDO::FETCH_ASSOC);
+            $document_name = $document_info['document_name'];
+    
+            // Delete the document from the database
+            $delete_document_query = $conn->prepare("DELETE FROM documents WHERE id = ?");
+            $delete_document_query->execute([$document_id]);
+    
+            if ($delete_document_query) {
+                // Delete the document file from the server
+                unlink('document_uploads/' . $document_name);
+    
+                // Display a success message
+                $message[] = 'Document deleted successfully!';
+            } else {
+                // Display an error message
+                $message[] = 'Error deleting document. Please try again.';
+            }
+        }
+    }
+    
+
     <!-- UniIcon CDN Link  -->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 </head>

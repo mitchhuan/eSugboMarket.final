@@ -1,9 +1,15 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
 session_start();
 
+if(isset($_SESSION['user_id'])){
+   header('location:home.php');
+   exit;
+}
+
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>

@@ -1,10 +1,19 @@
 <?php
-
+ob_start();
 @include 'config.php';
 
+session_start();
+
+if(isset($_SESSION['user_id'])){
+   header('location:category.php');
+   exit;
+}
+
+ob_end_flush();
 ?>
 
-<?php include 'newheader.php'; ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,6 +30,8 @@
    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+
+<?php include 'newheader.php'; ?>
    
 
 <section class="products">

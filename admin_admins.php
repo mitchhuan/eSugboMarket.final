@@ -66,8 +66,6 @@ ob_end_flush();
 
 </section>
 
-
-
 <script src="js/script.js"></script>
 
 </body>

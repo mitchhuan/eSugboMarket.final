@@ -1,7 +1,13 @@
 <?php
-
-// Remove the session_start() and user_id checks since it's a public contact page
+ob_start();
 @include 'config.php';
+
+session_start();
+
+if(isset($_SESSION['user_id'])){
+   header('location:about.php#contact');
+   exit;
+}
 
 if(isset($_POST['send'])){
 
@@ -26,6 +32,7 @@ if(isset($_POST['send'])){
 
 }
 
+ob_end_flush();
 ?>
 
 <!DOCTYPE html>

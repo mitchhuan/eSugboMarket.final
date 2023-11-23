@@ -1,6 +1,14 @@
 <?php
-
+ob_start();
 @include 'config.php';
+
+session_start();
+
+if(isset($_SESSION['user_id'])){
+   header('location:shop.php');
+   exit;
+}
+
 
 if(isset($_POST['add_to_wishlist'])){
 
@@ -66,7 +74,9 @@ if(isset($_POST['add_to_cart'])){
 
 }
 
+ob_end_flush();
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
