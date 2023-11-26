@@ -63,6 +63,9 @@ if (isset($_POST['update_profile'])) {
             if (!empty($updatedFields)) {
                 $message[] = implode(', ', $updatedFields) . ' updated successfully!';
             }
+        }else {
+            // No changes were made.
+            $message[] = 'No changes.';
         }
     }
 }

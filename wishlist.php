@@ -122,7 +122,7 @@ ob_end_flush();
    <div class="wishlist-total">
       <p>grand total : <span>₱<?= $grand_total; ?></span></p>
       <a href="shop.php" class="option-btn">continue shopping</a>
-      <a href="wishlist.php?delete_all" class="delete-btn <?= ($grand_total > 1)?'':'disabled'; ?>">delete all</a>
+      <a href="wishlist.php?delete_all" class="delete-btn <?= ($grand_total > 1)?'':'disabled'; ?>" onclick="return confirm('delete all from wishlist?');">delete all</a>
    </div>
 
 </section>

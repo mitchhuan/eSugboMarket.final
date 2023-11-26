@@ -98,7 +98,7 @@ ob_end_flush();
    <div class="cart-total">
       <p>grand total : <span>₱<?= $grand_total; ?></span></p>
       <a href="shop.php" class="option-btn">continue shopping</a>
-      <a href="cart.php?delete_all" class="delete-btn <?= ($grand_total > 1)?'':'disabled'; ?>">delete all</a>
+      <a href="cart.php?delete_all" class="delete-btn <?= ($grand_total > 1)?'':'disabled'; ?>" onclick="return confirm('delete all from the cart?');">delete all</a>
       <a href="checkout.php" class="btn <?= ($grand_total > 1)?'':'disabled'; ?>">proceed to checkout</a>
    </div>
 

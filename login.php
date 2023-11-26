@@ -91,6 +91,7 @@ if(isset($message)){
       <input type="password" name="pass" class="box" placeholder="enter your password" required>
       <input type="submit" value="login now" class="btn" name="submit">
       <p>don't have an account? <a href="register.php">register now</a></p>
+      <p>forgot password? <a href="forgetpass.php">click here</a></p>
    </form>
 
 </section>

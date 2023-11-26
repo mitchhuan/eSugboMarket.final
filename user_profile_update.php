@@ -44,21 +44,32 @@ if (isset($_POST['update_profile'])) {
 
     if (empty($message)) {
         // Email and phone number are valid, so proceed with the update.
-        $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ?, number = ? WHERE id = ?");
-        $update_profile->execute([$name, $email, $number, $user_id]);
+        $select_profile = $conn->prepare("SELECT name, email, number FROM `users` WHERE id = ?");
+        $select_profile->execute([$user_id]);
+        $current_profile = $select_profile->fetch(PDO::FETCH_ASSOC);
 
-        // Check if the username, email, or phone number was updated and show messages accordingly.
-        $updatedFields = array();
+        if ($current_profile['name'] !== $name || $current_profile['email'] !== $email || $current_profile['number'] !== $number) {
+            // Changes were made, update the profile.
+            $update_profile = $conn->prepare("UPDATE `users` SET name = ?, email = ?, number = ? WHERE id = ?");
+            $update_profile->execute([$name, $email, $number, $user_id]);
 
-        if ($update_profile->rowCount() > 0) {
-            $updatedFields[] = 'Profile';
+            // Check if the username, email, or phone number was updated and show messages accordingly.
+            $updatedFields = array();
+
+            if ($update_profile->rowCount() > 0) {
+                $updatedFields[] = 'Profile';
+            }
+
+            if (!empty($updatedFields)) {
+                $message[] = implode(', ', $updatedFields) . ' updated successfully!';
+            }
+        } else {
+            // No changes were made.
+            $message[] = 'No changes.';
         }
-
-        if (!empty($updatedFields)) {
-            $message[] = implode(', ', $updatedFields) . ' updated successfully!';
-        }
-    }
+    }   
 }
+
 
 if (isset($_POST['update_pass'])) {
     $old_pass = $_POST['old_pass'];

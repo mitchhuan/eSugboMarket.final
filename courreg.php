@@ -92,7 +92,7 @@ if (isset($_POST['submit'])) {
 
             // Redirect to the courier page with user_id parameter
             session_start();
-            $_SESSION['ucour_id'] = $courier_id;
+            $_SESSION['cour_id'] = $courier_id;
             header('Location: courier_page.php');
             exit;
         }

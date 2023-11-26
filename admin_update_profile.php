@@ -29,11 +29,6 @@ if (isset($_POST['update_profile'])) {
         $message[] = 'Email is already in use.';
     }
 
-    $phone_check_query = $conn->prepare("SELECT id FROM `users` WHERE number = ? AND id != ?");
-    $phone_check_query->execute([$number, $admin_id]);
-    if ($phone_check_query->rowCount() > 0) {
-        $message[] = 'Phone is already in use.';
-    }
 
     if (empty($message)) {
         // Email and phone number are valid, so proceed with the update.
@@ -49,6 +44,9 @@ if (isset($_POST['update_profile'])) {
 
         if (!empty($updatedFields)) {
             $message[] = implode(', ', $updatedFields) . ' updated successfully!';
+        }else {
+            // No changes were made.
+            $message[] = 'No changes.';
         }
     }
 }

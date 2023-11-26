@@ -7,7 +7,6 @@ session_start();
 $cour_id = $_SESSION['cour_id'];
 
 if (!isset($cour_id)) {
-    // If neither cour_id nor ucour_id is set, redirect to login
     header('Location: login.php');
     exit;
 }
