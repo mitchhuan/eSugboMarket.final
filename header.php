@@ -23,7 +23,12 @@ if(isset($message)){
          <a href="shop.php">shop</a>
          <a href="orders.php">orders</a>
          <a href="about.php">about</a>
-         <a href="contact.php">messages</a>
+         <?php
+         $count_unread = $conn->prepare("SELECT * FROM `messages` WHERE receiver_id = ? AND is_read = 0");
+         $count_unread->execute([$user_id]); // Use $user_id instead of $message_id
+         $unread_messages_count = $count_unread->rowCount();
+         ?>
+         <a href="contact.php">messages<span>(<?= $unread_messages_count; ?>)</span></a>
          <a href="map.php">tour</a>
       </nav>
 

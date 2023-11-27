@@ -217,12 +217,16 @@ ob_end_flush();
                     ?>
                 </div>
                 <div class="message-box">
+                    <?php if ($selectedUserId) : ?>
                     <form method="post" class="text">
-                        <input type="text" name="message" placeholder="Type your message" required>
-                        <input type="hidden" name="order_id" value="<?= $selectedOrderId ?>"> <!-- Added this line -->
-                        <input type="hidden" name="send_message" value="1">
-                        <button type="submit"><i class="fa-regular fa-paper-plane"></i></button>
+                    <input type="text" name="message" placeholder="Type your message" required>
+                    <input type="hidden" name="order_id" value="<?= $selectedOrderId ?>">
+                    <input type="hidden" name="send_message" value="1">
+                    <button type="submit"><i class="fa-regular fa-paper-plane"></i></button>
                     </form>
+                    <?php else : ?>
+                    <p>Select a user to send a message.</p>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>

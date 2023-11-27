@@ -39,10 +39,10 @@ if (isset($_POST['accept_order'])) {
       $orderDetailsQuery->execute([$order_id]);
       $orderDetails = $orderDetailsQuery->fetch(PDO::FETCH_ASSOC);
 
-      $messageContent = "Your order has been accepted by the courier. \n";
-      $messageContent = "Address: {$orderDetails['address']}\n";
-      $messageContent = "Total Products: {$orderDetails['total_products']}\n";
-      $messageContent = "Time of Order: {$orderDetails['time_of_order']}\n";
+      $messageContent = "Your order has been accepted by the courier. \n
+                        Address: {$orderDetails['address']}\n
+                        Total Products: {$orderDetails['total_products']}\n
+                        Time of Order: {$orderDetails['time_of_order']}\n";
       // ... (include other details as needed)
 
       // Insert the new message into the 'messages' table

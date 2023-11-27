@@ -148,7 +148,7 @@ ob_end_flush();
             <input type="text" name="country" placeholder="Philippines" class="box" value="Philippines" readonly>
          </div>
          <div class="inputBox">
-            <span>Pin Code :</span>
+            <span>Postal Code :</span>
             <input type="number" min="0" name="pin_code" placeholder="e.g. 1234" class="box" required>
          </div>
       </div>
