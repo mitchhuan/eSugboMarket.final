@@ -21,7 +21,7 @@ $courier = $select_courier->fetch(PDO::FETCH_ASSOC);
 
    <div class="flex">
 
-      <a href="courier_page.php" class="logo">Courier<span>Panel</span></a>
+      <a href="courier_page.php" class="logo" title="CourierPanel">Courier<span>Panel</span></a>
 
       <nav class="navbar">
          <a href="courier_page.php">home</a>
@@ -30,7 +30,7 @@ $courier = $select_courier->fetch(PDO::FETCH_ASSOC);
 
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>
-         <div id="user-btn" class="fas fa-user"></div>
+         <div id="user-btn" class="fas fa-user" title="User"></div>
       </div>
 
       <div class="profile">

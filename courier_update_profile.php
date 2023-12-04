@@ -63,9 +63,6 @@ if (isset($_POST['update_profile'])) {
             if (!empty($updatedFields)) {
                 $message[] = implode(', ', $updatedFields) . ' updated successfully!';
             }
-        }else {
-            // No changes were made.
-            $message[] = 'No changes.';
         }
     }
 }
@@ -101,6 +98,8 @@ if (isset($_POST['update_pass'])) {
 }
 
 if (!empty($_FILES['image']['name'])) {
+    $allowed_extensions = array('jpg', 'jpeg', 'png'); // Add any other allowed extensions
+
     $image = $_FILES['image']['name'];
     $image = filter_var($image, FILTER_SANITIZE_STRING);
     $image_size = $_FILES['image']['size'];
@@ -108,13 +107,16 @@ if (!empty($_FILES['image']['name'])) {
     $image_folder = 'uploaded_img/';
     $old_image = $_POST['old_image'];
 
-    if ($image_size > 1000000) {
+    $info = pathinfo($image);
+    $extension = strtolower($info['extension']);
+
+    if (!in_array($extension, $allowed_extensions)) {
+        $message[] = 'Invalid image file type. Allowed types are: ' . implode(', ', $allowed_extensions);
+    } elseif ($image_size > 1000000) {
         $message[] = 'Image size is too large!';
     } else {
         // Generate a unique filename
-        $info = pathinfo($image);
         $basename = $info['filename'];
-        $extension = $info['extension'];
         $counter = 1;
 
         while (file_exists($image_folder . $image)) {
@@ -123,7 +125,7 @@ if (!empty($_FILES['image']['name'])) {
         }
 
         $update_image = $conn->prepare("UPDATE `users` SET image = ? WHERE id = ?");
-        $update_image->execute([$image, $cour_id]);
+        $update_image->execute([$image, $user_id]);
         if ($update_image) {
             move_uploaded_file($image_tmp_name, $image_folder . $image);
 
@@ -136,6 +138,7 @@ if (!empty($_FILES['image']['name'])) {
         }
     }
 }
+
 
 if (isset($_POST['delete_user'])) {
     $user_id = $_SESSION['cour_id']; // Assuming you store user_id in the session
@@ -202,6 +205,8 @@ if (isset($_POST['submit_document'])) {
     }
 
     if ($filesSubmitted) {
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'pdf', 'doc', 'docx'];
+
         for ($i = 0; $i < $num_files; $i++) {
             $document_name = $documents['name'][$i];
 
@@ -210,10 +215,13 @@ if (isset($_POST['submit_document'])) {
                 $document_name = filter_var($document_name, FILTER_SANITIZE_STRING);
                 $document_size = $documents['size'][$i];
                 $document_tmp_name = $documents['tmp_name'][$i];
+                $document_extension = strtolower(pathinfo($document_name, PATHINFO_EXTENSION));
 
                 // Check if the document size is within limits
                 if ($document_size > 1000000) {
                     $message[] = 'Document size is too large!';
+                } elseif (!in_array($document_extension, $allowedExtensions)) {
+                    $message[] = 'Invalid file type. Allowed types are jpg, jpeg, png, pdf, doc, docx.';
                 } else {
                     // Generate a unique filename
                     $info = pathinfo($document_name);
@@ -245,6 +253,7 @@ if (isset($_POST['submit_document'])) {
         $message[] = 'No files submitted for upload.';
     }
 }
+
 
 // Retrieve documents related to the user
 $select_documents = $conn->prepare("SELECT * FROM documents WHERE courier_id = ?");
@@ -283,7 +292,8 @@ ob_end_flush();
                <input type="text" name="name" value="<?= $fetch_profile['name']; ?>" placeholder="update username" required class="box">
                <span>email :</span>
                <input type="email" name="email" value="<?= $fetch_profile['email']; ?>" placeholder="update email" required class="box">
-               <span>update pic :</span>
+               <span>update pic : (max 1 MB)</span>
+               <span>file ext. : jpg, jpeg, png</span>
                <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box">
                <input type="hidden" name="old_image" value="<?= $fetch_profile['image']; ?>">
                <span>phone number:</span>
@@ -300,14 +310,15 @@ ob_end_flush();
             <input type="password" name="confirm_pass" placeholder="confirm new password" class="box">
             </div>
             <div class="inputBox">
-            <span>files:</span>
+            <span>add file/s: (max 1 MB)</span>
+            <span>file ext.: jpg, jpeg, png, pdf, doc, docx</span>
                      <?php foreach ($documents as $document): ?>
                     <div class="box">
                         <a href="<?= $document['document_path']; ?>" target="_blank" style="word-wrap: break-word;"><?= $document['document_name']; ?></a>
                         <a href="?delete_document=<?= $document['id']; ?>" onclick="return confirm('Are you sure you want to delete this document?')" style="color: red;">(Delete)</a>
                     </div>
                     <?php endforeach; ?>
-                    <input type="file" name="documents[]" accept="application/pdf" class="box" multiple>
+                    <input type="file" name="documents[]" accept="application/jpg, jpeg, png, pdf, doc, docx" class="box" multiple>
                     <input type="submit" class="btn" value="add files" name="submit_document">
             </div>
          </div>

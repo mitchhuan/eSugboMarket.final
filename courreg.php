@@ -147,8 +147,8 @@ if(isset($message)){
       <label for="documents">Upload Necessary Documents for Verification:</label>
       <input type="file" name="documents[]" accept="application/pdf" class="box" multiple required>
       <input type="submit" value="Register Now" class="btn" name="submit">
-      <p>Already have an account? <a href="login.php">Login now</a></p>
-      <p>Go back to user registration <a href="register.php">Back</a></p>
+      <p>already have an account? <a href="login.php">Login now</a></p>
+      <p>go back to user registration <a href="register.php">Back</a></p>
    </form>
 
 </section>

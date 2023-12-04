@@ -16,7 +16,7 @@ if(isset($message)){
 
    <div class="flex">
 
-      <a href="home.php" class="logo"><span><b style="color: red;">e</b>SugboMarket</span></a>
+      <a href="home.php" class="logo" title="eSugboMarket"><span><b style="color: red;">e</b>SugboMarket</span></a>
 
       <nav class="navbar">
          <a href="home.php">home</a>
@@ -34,16 +34,16 @@ if(isset($message)){
 
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>
-         <div id="user-btn" class="fas fa-user"></div>
-         <a href="search_page.php" class="fas fa-search"></a>
+         <div id="user-btn" class="fas fa-user" title="User"></div>
+         <a href="search_page.php" class="fas fa-search" title="Search Items"></a>
          <?php
             $count_cart_items = $conn->prepare("SELECT * FROM `cart` WHERE user_id = ?");
             $count_cart_items->execute([$user_id]);
             $count_wishlist_items = $conn->prepare("SELECT * FROM `wishlist` WHERE user_id = ?");
             $count_wishlist_items->execute([$user_id]);
          ?>
-         <a href="wishlist.php"><i class="fas fa-heart"></i><span>(<?= $count_wishlist_items->rowCount(); ?>)</span></a>
-         <a href="cart.php"><i class="fas fa-shopping-cart"></i><span>(<?= $count_cart_items->rowCount(); ?>)</span></a>
+         <a href="wishlist.php"><i class="fas fa-heart" title="Wishlist"></i><span>(<?= $count_wishlist_items->rowCount(); ?>)</span></a>
+         <a href="cart.php"><i class="fas fa-shopping-cart" title="Cart"></i><span>(<?= $count_cart_items->rowCount(); ?>)</span></a>
       </div>
 
       <div class="profile">

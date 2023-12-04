@@ -80,6 +80,8 @@ if (isset($_POST['update_pass'])) {
 
 
 if (!empty($_FILES['image']['name'])) {
+    $allowed_extensions = array('jpg', 'jpeg', 'png'); // Add any other allowed extensions
+
     $image = $_FILES['image']['name'];
     $image = filter_var($image, FILTER_SANITIZE_STRING);
     $image_size = $_FILES['image']['size'];
@@ -87,13 +89,16 @@ if (!empty($_FILES['image']['name'])) {
     $image_folder = 'uploaded_img/';
     $old_image = $_POST['old_image'];
 
-    if ($image_size > 1000000) {
+    $info = pathinfo($image);
+    $extension = strtolower($info['extension']);
+
+    if (!in_array($extension, $allowed_extensions)) {
+        $message[] = 'Invalid image file type. Allowed types are: ' . implode(', ', $allowed_extensions);
+    } elseif ($image_size > 1000000) {
         $message[] = 'Image size is too large!';
     } else {
         // Generate a unique filename
-        $info = pathinfo($image);
         $basename = $info['filename'];
-        $extension = $info['extension'];
         $counter = 1;
 
         while (file_exists($image_folder . $image)) {
@@ -102,7 +107,7 @@ if (!empty($_FILES['image']['name'])) {
         }
 
         $update_image = $conn->prepare("UPDATE `users` SET image = ? WHERE id = ?");
-        $update_image->execute([$image, $admin_id]);
+        $update_image->execute([$image, $user_id]);
         if ($update_image) {
             move_uploaded_file($image_tmp_name, $image_folder . $image);
 
@@ -115,6 +120,7 @@ if (!empty($_FILES['image']['name'])) {
         }
     }
 }
+
 
 if (isset($_POST['delete_user'])) {
     $user_id = $_SESSION['admin_id']; // Assuming you store user_id in the session
@@ -165,7 +171,8 @@ ob_end_flush();
                <input type="text" name="name" value="<?= $fetch_profile['name']; ?>" placeholder="update username" required class="box">
                <span>email :</span>
                <input type="email" name="email" value="<?= $fetch_profile['email']; ?>" placeholder="update email" required class="box">
-               <span>update pic :</span>
+               <span>update pic : (max 1 MB)</span>
+               <span>file ext. : jpg, jpeg, png</span>
                <input type="file" name="image" accept="image/jpg, image/jpeg, image/png" class="box">
                <input type="hidden" name="old_image" value="<?= $fetch_profile['image']; ?>">
             </div>

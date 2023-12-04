@@ -17,10 +17,11 @@ if(isset($message)){
 
    <div class="flex">
 
-      <a href="admin_page.php" class="logo">Admin<span>Panel</span></a>
+      <a href="admin_page.php" class="logo" title="AdminPanel">Admin<span>Panel</span></a>
 
       <nav class="navbar">
          <a href="admin_page.php">home</a>
+         <a href="admin_totalaccounts.php">accounts</a>
          <a href="admin_products.php">products</a>
          <a href="admin_orders.php">orders</a>
          <a href="admin_contacts.php">messages</a>
@@ -28,7 +29,7 @@ if(isset($message)){
 
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>
-         <div id="user-btn" class="fas fa-user"></div>
+         <div id="user-btn" class="fas fa-user" title="User"></div>
       </div>
 
       <div class="profile">

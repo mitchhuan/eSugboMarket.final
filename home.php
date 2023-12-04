@@ -121,7 +121,6 @@ ob_end_flush();
       <div class="box">
          <img src="images/cat-1.png" alt="">
          <h3>Fresh fruits and vegetables</h3>
-
       </div>
       </a>
       
@@ -130,7 +129,6 @@ ob_end_flush();
       <div class="box">
          <img src="images/cat-2.png" alt="">
          <h3>Poultry and meat products</h3>
-
       </div>
       </a>
 

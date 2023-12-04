@@ -20,7 +20,7 @@ if(isset($message) && is_array($message)){
 
    <div class="flex">
 
-      <a href="newhome.php" class="logo"><span><b style="color: red;">e</b>SugboMarket</span></a>
+      <a href="newhome.php" class="logo" title="eSugboMarket"><span><b style="color: red;">e</b>SugboMarket</span></a>
 
       <nav class="navbar">
          <a href="newhome.php">home</a>
@@ -32,9 +32,9 @@ if(isset($message) && is_array($message)){
 
       <div class="icons">
          <div id="menu-btn" class="fas fa-bars"></div>
-         <div id="user-btn" class="fas fa-user"></div>
-         <a href="newsearch_page.php" class="fas fa-search"></a>
-         <a href="login.php"><i class="fas fa-shopping-cart"></i></a>
+         <div id="user-btn" class="fas fa-user" title="User"></div>
+         <a href="newsearch_page.php" class="fas fa-search" title="Search Items"></a>
+         <a href="login.php"><i class="fas fa-shopping-cart" title="Cart"></i></a>
       </div>
 
       <div class="profile">

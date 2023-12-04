@@ -37,7 +37,7 @@ if (isset($_POST['submit'])) {
                 $message[] = 'No user found!';
             }
         } else {
-            $message[] = 'Incorrect email or password!';
+            $message[] = 'Incorrect password!';
         }
     } else {
         $message[] = 'No user found!';
@@ -90,8 +90,7 @@ if(isset($message)){
       <input type="email" name="email" class="box" placeholder="enter your email" required value="<?= $email ?>">
       <input type="password" name="pass" class="box" placeholder="enter your password" required>
       <input type="submit" value="login now" class="btn" name="submit">
-      <p>don't have an account? <a href="register.php">register now</a></p>
-      <p>forgot password? <a href="forgetpass.php">click here</a></p>
+      <p>Don't have an account? <a href="register.php">register now</a></p>
    </form>
 
 </section>

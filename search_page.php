@@ -104,12 +104,6 @@ ob_end_flush();
 
 </section>
 
-<?php
-
-
-
-?>
-
 <section class="products" style="padding-top: 0; min-height:100vh;">
 
    <div class="box-container">

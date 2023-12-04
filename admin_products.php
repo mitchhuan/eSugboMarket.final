@@ -10,8 +10,7 @@ if(!isset($admin_id)){
    header('location:login.php');
 };
 
-if(isset($_POST['add_product'])){
-
+if (isset($_POST['add_product'])) {
    $name = $_POST['name'];
    $name = filter_var($name, FILTER_SANITIZE_STRING);
    $price = $_POST['price'];
@@ -25,31 +24,73 @@ if(isset($_POST['add_product'])){
    $image = filter_var($image, FILTER_SANITIZE_STRING);
    $image_size = $_FILES['image']['size'];
    $image_tmp_name = $_FILES['image']['tmp_name'];
-   $image_folder = 'uploaded_img/'.$image;
+   $image_folder = 'uploaded_img/' . $image;
 
    $select_products = $conn->prepare("SELECT * FROM `products` WHERE name = ?");
    $select_products->execute([$name]);
 
-   if($select_products->rowCount() > 0){
-      $message[] = 'product name already exist!';
-   }else{
+   if ($select_products->rowCount() > 0) {
+       $message[] = 'Product name already exists!';
+   } else {
+       // Validate image file type
+       $allowed_image_types = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF];
+       $detected_image_type = exif_imagetype($image_tmp_name);
 
-      $insert_products = $conn->prepare("INSERT INTO `products`(name, category, details, price, image) VALUES(?,?,?,?,?)");
-      $insert_products->execute([$name, $category, $details, $price, $image]);
+       if (!in_array($detected_image_type, $allowed_image_types)) {
+           $message[] = 'Invalid image file type. Please upload a JPEG, PNG, or GIF image.';
+       } else {
+           $insert_products = $conn->prepare("INSERT INTO `products`(name, category, details, price, image) VALUES(?,?,?,?,?)");
+           $insert_products->execute([$name, $category, $details, $price, $image]);
 
-      if($insert_products){
-         if($image_size > 1000000){
-            $message[] = 'image size is too large!';
-         }else{
-            move_uploaded_file($image_tmp_name, $image_folder);
-            $message[] = 'new product added!';
-         }
-
-      }
-
+           if ($insert_products) {
+               if ($image_size > 1000000) {
+                   $message[] = 'Image size is too large!';
+               } else {
+                   move_uploaded_file($image_tmp_name, $image_folder);
+                   $message[] = 'New product added!';
+               }
+           }
+       }
    }
+}
 
-};
+if (isset($_POST['add_category'])) {
+   $category_name = $_POST['category_name'];
+   $category_name = filter_var($category_name, FILTER_SANITIZE_STRING);
+
+   $category_image = $_FILES['category_image']['name'];
+   $category_image = filter_var($category_image, FILTER_SANITIZE_STRING);
+   $category_image_size = $_FILES['category_image']['size'];
+   $category_image_tmp_name = $_FILES['category_image']['tmp_name'];
+   $category_image_folder = 'images/' . $category_image;
+
+   $select_categories = $conn->prepare("SELECT * FROM `categories` WHERE name = ?");
+   $select_categories->execute([$category_name]);
+
+   if ($select_categories->rowCount() > 0) {
+       $message[] = 'Category name already exists!';
+   } else {
+       // Validate image file type
+       $allowed_image_types = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF];
+       $detected_image_type = exif_imagetype($category_image_tmp_name);
+
+       if (!in_array($detected_image_type, $allowed_image_types)) {
+           $message[] = 'Invalid image file type. Please upload a JPEG, PNG, or GIF image.';
+       } else {
+           $insert_category = $conn->prepare("INSERT INTO `categories` (name, image) VALUES (?, ?)");
+           $insert_category->execute([$category_name, $category_image]);
+
+           if ($insert_category) {
+               if ($category_image_size > 5000000) {
+                   $message[] = 'Image size is too large!';
+               } else {
+                   move_uploaded_file($category_image_tmp_name, $category_image_folder);
+                   $message[] = 'New category added!';
+               }
+           }
+       }
+   }
+}
 
 if(isset($_GET['delete'])){
 
@@ -85,6 +126,7 @@ ob_end_flush();
 
    <!-- custom css file link  -->
    <link rel="stylesheet" href="css/admin_style.css">
+   <link rel="stylesheet" href="css/style.css">
 
 </head>
 <body>
@@ -122,19 +164,69 @@ ob_end_flush();
       <input type="submit" class="btn" value="add product" name="add_product">
    </form>
 
+   <h1 class="title">Add New Category</h1>
+
+        <form action="" method="POST" enctype="multipart/form-data">
+            <div class="flex">
+                <div class="inputBox">
+                    <input type="text" name="category_name" class="box" required placeholder="Enter category name">
+                </div>
+                <div class="inputBox">
+                    <input type="file" name="category_image" required class="box" accept="image/jpg, image/jpeg, image/png">
+                </div>
+            </div>
+            <input type="submit" class="btn" value="Add Category" name="add_category">
+        </form>
+
 </section>
+
+<section class="show-products">
+
+<h1 class="title">Categories Added</h1>
+
+<div class="box-container">
+    <?php
+    $select_categories = $conn->prepare("SELECT * FROM `categories`");
+    $select_categories->execute();
+    if ($select_categories->rowCount() > 0) {
+        while ($fetch_categories = $select_categories->fetch(PDO::FETCH_ASSOC)) {
+            ?>
+            <div class="box">
+                <img src="uploaded_img/<?= $fetch_categories['image']; ?>" alt="">
+                <div class="name"><?= $fetch_categories['name']; ?></div>
+                <div class="flex-btn">
+                    <a href="admin_products.php?update=<?= $fetch_categories['id']; ?>" class="option-btn">update</a>
+                    <a href="admin_products.php?delete=<?= $fetch_categories['id']; ?>" class="delete-btn" onclick="return confirm('delete this category?');">delete</a>
+                </div>
+            </div>
+            <?php
+        }
+    } else {
+        echo '<p class="empty">No categories added yet!</p>';
+    }
+    ?>
+</div>
+
+</section>
+
 
 <section class="show-products">
 
    <h1 class="title">products added</h1>
 
+   <section class="search-form">
+            <form action="" method="POST">
+                <input type="text" class="box" name="search_box" id="searchInput" placeholder="search products and categories...">
+            </form>
+   </section>
+
    <div class="box-container">
 
    <?php
-      $show_products = $conn->prepare("SELECT * FROM `products`");
-      $show_products->execute();
-      if($show_products->rowCount() > 0){
-         while($fetch_products = $show_products->fetch(PDO::FETCH_ASSOC)){  
+    $select_products = $conn->prepare("SELECT * FROM `products` ORDER BY id DESC");
+    $select_products->execute();
+    if($select_products->rowCount() > 0){
+        while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
    ?>
    <div class="box">
       <div class="price">₱<?= $fetch_products['price']; ?></div>
@@ -157,15 +249,6 @@ ob_end_flush();
    </div>
 
 </section>
-
-
-
-
-
-
-
-
-
 
 
 <script src="js/script.js"></script>
