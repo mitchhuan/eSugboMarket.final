@@ -125,12 +125,12 @@ if (!empty($_FILES['image']['name'])) {
         }
 
         $update_image = $conn->prepare("UPDATE `users` SET image = ? WHERE id = ?");
-        $update_image->execute([$image, $user_id]);
+        $update_image->execute([$image, $cour_id]);
         if ($update_image) {
             move_uploaded_file($image_tmp_name, $image_folder . $image);
 
-            // Delete the old image if it's not the default image
-            if ($old_image !== 'default.png') {
+            // Delete the old image if it exists and it's not the default image
+            if ($old_image !== 'default.png' && file_exists($image_folder . $old_image)) {
                 unlink($image_folder . $old_image);
             }
 

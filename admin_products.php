@@ -142,21 +142,19 @@ ob_end_flush();
          <div class="inputBox">
          <input type="text" name="name" class="box" required placeholder="enter product name">
          <select name="category" class="box" required>
-            <option value="" selected disabled>select category</option>
-               <option value="fruits and vegetables">fruits and vegetables</option>
-               <option value="poultry and meat">poultry and meat</option>
-               <option value="dry goods and grains">dry goods and grains</option>
-               <option value="fresh seafood">fresh seafood</option>
-               <option value="spices and condiments">spices and condiments</option>
-               <option value="local snacks and street food">local snacks and street food</option>
-               <option value="animal foods and products">animal foods and products</option>
-               <option value="flowers and ornaments">flowers and ornaments</option>
-               <option value="handicrafts and souvenir">handicrafts and souvenir</option>
-               <option value="kitchen stuff ">kitchen stuff</option>
-         </select>
+                <option value="" selected disabled>select category</option>
+                <?php
+                $select_category_names = $conn->prepare("SELECT name FROM `categories`");
+                $select_category_names->execute();
+                
+                while ($category_name = $select_category_names->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="' . htmlspecialchars($category_name['name']) . '">' . htmlspecialchars($category_name['name']) . '</option>';
+                }
+                ?>
+        </select>
          </div>
          <div class="inputBox">
-         <input type="number" min="0" name="price" class="box" required placeholder="enter product price">
+         <input type="number" min="1" name="price" class="box" required placeholder="enter product price">
          <input type="file" name="image" required class="box" accept="image/jpg, image/jpeg, image/png">
          </div>
       </div>
@@ -164,63 +162,22 @@ ob_end_flush();
       <input type="submit" class="btn" value="add product" name="add_product">
    </form>
 
-   <h1 class="title">Add New Category</h1>
-
-        <form action="" method="POST" enctype="multipart/form-data">
-            <div class="flex">
-                <div class="inputBox">
-                    <input type="text" name="category_name" class="box" required placeholder="Enter category name">
-                </div>
-                <div class="inputBox">
-                    <input type="file" name="category_image" required class="box" accept="image/jpg, image/jpeg, image/png">
-                </div>
-            </div>
-            <input type="submit" class="btn" value="Add Category" name="add_category">
-        </form>
-
 </section>
-
-<section class="show-products">
-
-<h1 class="title">Categories Added</h1>
-
-<div class="box-container">
-    <?php
-    $select_categories = $conn->prepare("SELECT * FROM `categories`");
-    $select_categories->execute();
-    if ($select_categories->rowCount() > 0) {
-        while ($fetch_categories = $select_categories->fetch(PDO::FETCH_ASSOC)) {
-            ?>
-            <div class="box">
-                <img src="uploaded_img/<?= $fetch_categories['image']; ?>" alt="">
-                <div class="name"><?= $fetch_categories['name']; ?></div>
-                <div class="flex-btn">
-                    <a href="admin_products.php?update=<?= $fetch_categories['id']; ?>" class="option-btn">update</a>
-                    <a href="admin_products.php?delete=<?= $fetch_categories['id']; ?>" class="delete-btn" onclick="return confirm('delete this category?');">delete</a>
-                </div>
-            </div>
-            <?php
-        }
-    } else {
-        echo '<p class="empty">No categories added yet!</p>';
-    }
-    ?>
-</div>
-
-</section>
-
 
 <section class="show-products">
 
    <h1 class="title">products added</h1>
 
-   <section class="search-form">
-            <form action="" method="POST">
-                <input type="text" class="box" name="search_box" id="searchInput" placeholder="search products and categories...">
-            </form>
-   </section>
+    <section class="search-form">
+    <form action="" method="POST">
+        <input type="text" class="box" name="search_box" id="searchInput" placeholder="search products..." onclick="focusSearch()">
+    </form>
+    </section>
+
+   <div id="noProductMessage" style="display: none; color: red; font-size: large;">No product found!</div>
 
    <div class="box-container">
+
 
    <?php
     $select_products = $conn->prepare("SELECT * FROM `products` ORDER BY id DESC");
@@ -249,6 +206,51 @@ ob_end_flush();
    </div>
 
 </section>
+
+
+<script>
+function focusSearch() {
+    var searchInput = document.getElementById('searchInput');
+    searchInput.focus();
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+    var searchInput = document.getElementById('searchInput');
+    var categoryBoxes = document.querySelectorAll('.box-container .box');
+    var noCategoryMessage = document.getElementById('noCategoryMessage');
+
+    searchInput.addEventListener('input', function () {
+        var searchTerm = searchInput.value.toLowerCase();
+        var anyMatchFound = false;
+
+        categoryBoxes.forEach(function (box) {
+            var categoryName = box.querySelector('.name').innerText.toLowerCase();
+
+            // Show or hide the product box based on whether the search term matches the product name
+            var matchFound = categoryName.includes(searchTerm);
+            box.style.display = matchFound ? '' : 'none';
+
+            if (matchFound) {
+                anyMatchFound = true;
+            }
+        });
+
+        // Display or hide the "No product found" message
+        noProductMessage.style.display = anyMatchFound ? 'none' : 'block';
+    });
+
+    // Set focus on the search input when the page loads
+    focusSearch();
+
+    // Smooth scroll to the search input when it is clicked
+    searchInput.addEventListener('click', function () {
+        focusSearch();
+        searchInput.scrollIntoView({ behavior: 'smooth' });
+    });
+});
+</script>
+
+
 
 
 <script src="js/script.js"></script>

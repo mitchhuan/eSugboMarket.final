@@ -227,6 +227,7 @@
 
 .p-category a{
    padding:1.5rem;
+   height: 7.5rem;
    text-align: center;
    border:var(--border);
    background-color: var(--white);

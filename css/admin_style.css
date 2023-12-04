@@ -255,7 +255,202 @@
    color:var(--green);
 }
 
+/* Modal styles */
+.modal {
+   display: none;
+   position: fixed;
+   z-index: 1;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+   overflow: auto;
+   background-color: rgba(0,0,0,0.7);
+}
 
+.modal-content {
+   background-color: #fefefe;
+   margin: 10% auto;
+   padding: 20px;
+   border: 1px solid #888;
+   width: 50%;
+}
+
+.close {
+   color: #aaa;
+   float: right;
+   font-size: 28px;
+   font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+   color: black;
+   text-decoration: none;
+   cursor: pointer;
+}
+
+
+.modal-content form {
+   width: 50rem;
+   background-color: var(--white);
+   border-radius: .5rem;
+   box-shadow: var(--box-shadow);
+   border: var(--border);
+   text-align: center;
+   padding: 2rem;
+}
+
+.modal-content form h3 {
+   font-size: 3rem;
+   color: var(--black);
+   margin-bottom: 1rem;
+   text-transform: uppercase;
+}
+
+.modal-content form .box {
+   width: 100%;
+   margin: 1rem 0;
+   border-radius: .5rem;
+   border: var(--border);
+   padding: 1.2rem 1.4rem;
+   font-size: 1.8rem;
+   color: var(--black);
+   background-color: var(--light-bg);
+}
+
+.modal-content form p {
+   margin-top: 2rem;
+   font-size: 2.2rem;
+   color: var(--light-color);
+}
+
+.modal-content form p a {
+   color: var(--green);
+}
+
+.modal-content form p a:hover {
+   text-decoration: underline;
+}
+
+/* Table styles */
+.user-table {
+   width: 100%;
+   border-collapse: collapse;
+   margin-top: 20px;
+}
+
+.user-table th,
+.user-table td {
+   padding: 9px;
+   text-align: left;
+   border-bottom: 1px solid #ddd;
+   font-size: 16px; /* Adjust the font size as needed */
+}
+
+.user-table th {
+   background-color: #f2f2f2;
+}
+
+.user-table tbody tr:hover {
+   background-color: #f5f5f5;
+}
+
+.user-table img.user-image {
+   width: 40px; /* Set the width of the circular image */
+   height: 40px; /* Set the height of the circular image */
+   object-fit: cover; /* Make the image cover the circle */
+   border-radius: 50%; /* Create a circular shape */
+   margin-right: 10px; /* Adjust the spacing between the image and text */
+   vertical-align: middle;
+}
+
+/* Responsive styles using media queries */
+@media (max-width: 768px) {
+   /* Adjust the modal width for smaller screens */
+   .modal-content {
+       width: 90%;
+   }
+
+   /* Adjust font size for better readability on smaller screens */
+   .modal-content form h3 {
+       font-size: 2rem;
+   }
+
+   .modal-content form .box {
+       font-size: 1.6rem;
+   }
+
+   .user-table th,
+   .user-table td {
+       font-size: 14px;
+   }
+
+   /* Ensure images in the table are responsive */
+   .user-table img.user-image {
+       width: 30px;
+       height: 30px;
+   }
+  /* Adjusted modal width for smaller screens */
+  .modal-content {
+     background-color: #fefefe;
+     margin: 10% auto;
+     padding: 20px;
+     border: 1px solid #888;
+     width: 90%; /* Adjusted width for smaller screens */
+  }
+
+  /* Form styles */
+  .modal-content form {
+     width: 100%; /* Full width on small screens */
+     max-width: 375px; /* Max width for small screens */
+     margin: 0 auto; /* Center the form on small screens */
+  }
+
+  /* Adjusted font size for better readability on smaller screens */
+  .modal-content form h3 {
+     font-size: 2rem;
+  }
+
+  .modal-content form .box {
+     font-size: 1.6rem;
+  }
+}
+
+   .modal-content form {
+       width: 100%; /* Full width on small screens */
+   }
+
+   .modal-content form .box {
+       width: calc(100% - 2rem); /* Adjusted width for small screens */
+   }
+
+   .modal-content form select {
+       width: calc(100% - 2rem); /* Adjusted width for small screens */
+   }
+
+   .modal-content form img.user-image {
+       width: 150px; /* Adjusted width for small screens */
+       height: 150px; /* Adjusted height for small screens */
+   }
+
+
+/* Additional responsive styles for screens with max-width: 450px */
+@media (max-width: 450px) {
+   .modal-content {
+       width: 95%;
+   }
+
+   .user-table th,
+   .user-table td {
+       font-size: 10px;
+   }
+
+   .user-table img.user-image {
+       width: 25px;
+       height: 25px;
+   }
+}
 
 @media (max-width:768px){
 

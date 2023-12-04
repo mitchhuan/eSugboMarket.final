@@ -55,7 +55,7 @@ ob_end_flush();
     <div class="box-container">
         <?php
         // Retrieve categories from the database
-        $select_categories = $conn->prepare("SELECT * FROM categories");
+        $select_categories = $conn->prepare("SELECT * FROM `categories` ORDER BY RAND()");
         $select_categories->execute();
 
         while ($category = $select_categories->fetch(PDO::FETCH_ASSOC)) {

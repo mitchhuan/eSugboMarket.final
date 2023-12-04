@@ -75,6 +75,7 @@ if(isset($_POST['add_to_cart'])){
 }
 ob_end_flush();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -97,11 +98,15 @@ ob_end_flush();
 
 <section class="p-category">
 
-   <a href="category.php?category=fruits and vegetables">fruits and vegetables</a>
-   <a href="category.php?category=poultry and meat">poultry and meat</a>
-   <a href="category.php?category=fresh seafood">fresh seafood</a>
-   <a href="category.php?category=spices and condiments">spices and condiments</a>
+   <?php
+   $select_categories = $conn->prepare("SELECT * FROM `categories` ORDER BY RAND() LIMIT 4");
+    $select_categories->execute();
 
+    while ($category = $select_categories->fetch(PDO::FETCH_ASSOC)) {
+        $categoryName = htmlspecialchars($category['name']);
+        echo '<a href="category.php?category=' . urlencode($categoryName) . '">' . $categoryName . '</a>';
+    }
+   ?>
 
 </section>
 

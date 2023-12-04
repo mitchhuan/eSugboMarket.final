@@ -88,6 +88,17 @@ ob_end_flush();
       <a href="admin_products.php" class="btn">see products</a>
       </div>
 
+      <div class="box">
+      <?php
+         $select_categories = $conn->prepare("SELECT * FROM `categories`");
+         $select_categories->execute();
+         $number_of_categories = $select_categories->rowCount();
+      ?>
+      <h3><?= $number_of_categories; ?></h3>
+      <p>categories added</p>
+      <a href="admin_category.php" class="btn">see categories</a>
+      </div>
+
 
       <div class="box">
       <?php
