@@ -54,43 +54,6 @@ if (isset($_POST['add_product'])) {
    }
 }
 
-if (isset($_POST['add_category'])) {
-   $category_name = $_POST['category_name'];
-   $category_name = filter_var($category_name, FILTER_SANITIZE_STRING);
-
-   $category_image = $_FILES['category_image']['name'];
-   $category_image = filter_var($category_image, FILTER_SANITIZE_STRING);
-   $category_image_size = $_FILES['category_image']['size'];
-   $category_image_tmp_name = $_FILES['category_image']['tmp_name'];
-   $category_image_folder = 'images/' . $category_image;
-
-   $select_categories = $conn->prepare("SELECT * FROM `categories` WHERE name = ?");
-   $select_categories->execute([$category_name]);
-
-   if ($select_categories->rowCount() > 0) {
-       $message[] = 'Category name already exists!';
-   } else {
-       // Validate image file type
-       $allowed_image_types = [IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_GIF];
-       $detected_image_type = exif_imagetype($category_image_tmp_name);
-
-       if (!in_array($detected_image_type, $allowed_image_types)) {
-           $message[] = 'Invalid image file type. Please upload a JPEG, PNG, or GIF image.';
-       } else {
-           $insert_category = $conn->prepare("INSERT INTO `categories` (name, image) VALUES (?, ?)");
-           $insert_category->execute([$category_name, $category_image]);
-
-           if ($insert_category) {
-               if ($category_image_size > 5000000) {
-                   $message[] = 'Image size is too large!';
-               } else {
-                   move_uploaded_file($category_image_tmp_name, $category_image_folder);
-                   $message[] = 'New category added!';
-               }
-           }
-       }
-   }
-}
 
 if(isset($_GET['delete'])){
 
@@ -105,8 +68,8 @@ if(isset($_GET['delete'])){
    $delete_wishlist->execute([$delete_id]);
    $delete_cart = $conn->prepare("DELETE FROM `cart` WHERE pid = ?");
    $delete_cart->execute([$delete_id]);
-   header('location:admin_products.php');
 
+   $message [] = 'Product deleted!';
 
 }
 ob_end_flush();

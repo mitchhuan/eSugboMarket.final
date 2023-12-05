@@ -61,10 +61,11 @@ if(isset($_GET['delete'])){
     $delete_category = $conn->prepare("DELETE FROM `categories` WHERE id = ?");
     $delete_category->execute([$delete_id]);
 
+    $message [] = 'Category deleted!';
+
     // Remove the category image file
     unlink('images/'.$fetch_category['image']);
 
-    header('location:admin_category.php');
 }
 
 ob_end_flush();
@@ -125,7 +126,7 @@ ob_end_flush();
 
 <div class="box-container">
     <?php
-    $select_categories = $conn->prepare("SELECT * FROM `categories`");
+    $select_categories = $conn->prepare("SELECT * FROM `categories` ORDER BY id DESC");
     $select_categories->execute();
     if ($select_categories->rowCount() > 0) {
         while ($fetch_categories = $select_categories->fetch(PDO::FETCH_ASSOC)) {
