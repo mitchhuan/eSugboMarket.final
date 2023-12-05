@@ -135,7 +135,9 @@ elseif (isset($_POST['delete_user'])) {
     $delete_user->execute([$user_id_to_delete]);
 
     $message[] = 'User deleted successfully!';
-} 
+
+}
+
 
 
 ob_end_flush();
@@ -157,6 +159,7 @@ ob_end_flush();
     <!-- custom css file link  -->
     <link rel="stylesheet" href="css/admin_style.css">
     <link rel="stylesheet" href="css/style.css">
+
 
 </head>
 
@@ -268,7 +271,7 @@ ob_end_flush();
                                     <!-- Inside the form for updating user -->
                                     <input type="submit" value="Update" class="btn" name="update_user">
                                     <input type="hidden" name="delete_user" id="deleteUserId">
-                                    <button class="delete-btn" onclick="confirmDelete(<?= $fetch_users['id']; ?>)">Delete</button>
+                                    <button class="delete-btn" data-user-id="<?= $fetch_users['id']; ?>">Delete</button>
                                 </form>
                             </div>
                         </div>
@@ -283,6 +286,8 @@ ob_end_flush();
 </div>
 
 </section>
+
+
 
 <script>
 var modal = document.getElementById('userModal');
@@ -335,7 +340,8 @@ document.addEventListener('DOMContentLoaded', function () {
    });
 });
 
-// Update Modal
+
+<!-- Update Modal -->
 document.addEventListener('DOMContentLoaded', function () {
     // Get all update buttons
     var updateBtns = document.querySelectorAll('.update-btn');
@@ -361,31 +367,36 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
-    // Add click event listener to delete buttons
-    var deleteBtns = document.querySelectorAll('.delete-btn');
+// Add click event listener to delete buttons
+var deleteBtns = document.querySelectorAll('.delete-btn');
 
-    deleteBtns.forEach(function (deleteBtn) {
-        deleteBtn.addEventListener('click', function () {
-            var confirmDelete = confirm('Are you sure you want to delete this account? This action cannot be undone.');
+deleteBtns.forEach(function (deleteBtn) {
+    deleteBtn.addEventListener('click', function (event) {
+        // Prevent the default form submission behavior
+        event.preventDefault();
 
-            if (confirmDelete) {
-                // Trigger the form submission for user deletion
-                this.closest('form').submit();
-            }
-        });
+        var confirmDelete = confirm('Are you sure you want to delete this account? This action cannot be undone.');
+
+        if (confirmDelete) {
+            // Get the user ID associated with the clicked delete button
+            var userId = this.getAttribute('data-user-id');
+
+            // Set the user ID to the delete_user input field
+            document.getElementById('deleteUserId').value = userId;
+
+            // Submit the form
+            document.getElementById('deleteUserForm').submit();
+        } else {
+            // Close the update modal when deletion is canceled
+            var updateModalId = this.getAttribute('data-update-modal-id');
+            var modal = document.getElementById('updateUserModal' + updateModalId);
+            modal.style.display = 'none';
+        }
     });
 });
 
-function confirmDelete(userId) {
-    var confirmDelete = confirm('Are you sure you want to delete this account? This action cannot be undone.');
+});
 
-    if (confirmDelete) {
-        // Set the user ID to the delete_user input field
-        document.getElementById('deleteUserId').value = userId;
-        // Submit the form
-        document.getElementById('deleteUserForm').submit();
-    }
-}
 
 
 </script>

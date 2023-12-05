@@ -50,85 +50,30 @@ ob_end_flush();
 
 <section class="home-category" id="category">
 
-   <h1 class="title">shop by category</h1>
+    <h1 class="title">Shop by Category</h1>
 
-   <div class="box-container">
-      <a href="newcategory.php?category=fruits and vegetables">
-      <div class="box">
-         <img src="images/cat-1.png" alt="">
-         <h3>Fresh fruits and vegetables</h3>
+    <div class="box-container">
+        <?php
+        // Retrieve categories from the database
+        $select_categories = $conn->prepare("SELECT * FROM `categories` ORDER BY RAND()");
+        $select_categories->execute();
 
-      </div>
-      </a>
-      
-
-      <a href="newcategory.php?category=poultry and meat">
-      <div class="box">
-         <img src="images/cat-2.png" alt="">
-         <h3>Poultry and meat products</h3>
-
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=Drygoods and grains">
-      <div class="box">
-         <img src="images/rice.png" alt="">
-         <h3>Dry goods and grains</h3>
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=fresh seafood">
-      <div class="box">
-         <img src="images/cat-4.png" alt="">
-         <h3>Fresh seafood</h3>
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=spices and condiments">
-      <div class="box">
-         <img src="images/spices.png" alt="">
-         <h3>Spices and condiments</h3>
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=local snacks and street food">
-      <div class="box">
-         <img src="images/street food.png" alt="">
-         <h3>Local snacks and street food</h3>
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=animal foods and products">
-      <div class="box">
-         <img src="images/pellets.png" alt="">
-         <h3>Animal Foods and Products</h3>
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=flowers and ornaments">
-      <div class="box">
-         <img src="images/flowers.png" alt="">
-         <h3>Flowers and Ornaments</h3>
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=handicrafts and souvenirs">
-      <div class="box">
-         <img src="images/craft.png" alt="">
-         <h3>Handicrafts and souvenirs</h3>
-      </div>
-      </a>
-
-      <a href="newcategory.php?category=kitchen Stuff">
-      <div class="box">
-         <img src="images/utensils.png" alt="">
-         <h3>Kitchen Stuff</h3>
-      </div>
-      </a>
-
-   </div>
+        while ($category = $select_categories->fetch(PDO::FETCH_ASSOC)) {
+            $imagePath = "images/" . $category['image']; // Assuming the column name is 'image'
+            ?>
+            <a href="newcategory.php?category=<?= urlencode($category['name']); ?>">
+                <div class="box">
+                    <img src="<?= $imagePath; ?>" alt="<?= $category['name']; ?>">
+                    <h3><?= $category['name']; ?></h3>
+                </div>
+            </a>
+        <?php
+        }
+        ?>
+    </div>
 
 </section>
+
 
 
 <section class="products" >
@@ -142,7 +87,7 @@ ob_end_flush();
     $select_products->execute();
     if($select_products->rowCount() > 0){
         while($fetch_products = $select_products->fetch(PDO::FETCH_ASSOC)){ 
-?>
+   ?>
     <form action="" class="box" method="POST">
         <a href="newview_page.php?pid=<?= $fetch_products['id']; ?>">
             <div class="price">₱<span><?= $fetch_products['price']; ?></span></div>
