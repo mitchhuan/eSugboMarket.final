@@ -131,18 +131,16 @@ ob_end_flush();
       <input type="text" name="name" placeholder="enter product name" required class="box" value="<?= $fetch_products['name']; ?>">
       <input type="number" name="price" min="1" placeholder="enter product price" required class="box" value="<?= $fetch_products['price']; ?>">
       <select name="category" class="box" required>
-         <option selected><?= $fetch_products['category']; ?></option>
-               <option value="fruits and vegetables">fruits and vegetables</option>
-               <option value="poultry and meat">poultry and meat</option>
-               <option value="dry goods and grains">dry goods and grains</option>
-               <option value="fresh seafood">fresh seafood</option>
-               <option value="spices and condiments">spices and condiments</option>
-               <option value="local snacks and street food">local snacks and street food</option>
-               <option value="clothing and apparel">clothing and apparel</option>
-               <option value="footwear and accessories">footwear and accessories</option>
-               <option value="handicrafts and souvenir">handicrafts and souvenir</option>
-               <option value="kitchen stuff ">kitchen stuff</option>
-      </select>
+      <option selected><?= $fetch_products['category']; ?></option>
+                <?php
+                $select_category_names = $conn->prepare("SELECT name FROM `categories`");
+                $select_category_names->execute();
+                
+                while ($category_name = $select_category_names->fetch(PDO::FETCH_ASSOC)) {
+                    echo '<option value="' . htmlspecialchars($category_name['name']) . '">' . htmlspecialchars($category_name['name']) . '</option>';
+                }
+                ?>
+        </select>
       <textarea name="details" required placeholder="enter product details" class="box" cols="30" rows="10"><?= $fetch_products['details']; ?></textarea>
       <span>update pic : (max 1 MB)</span>
       <span>file ext. : jpg, jpeg, png</span>

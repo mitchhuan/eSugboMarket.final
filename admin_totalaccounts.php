@@ -4,6 +4,7 @@ ob_start();
 
 session_start();
 
+
 $admin_id = $_SESSION['admin_id'];
 
 if (!isset($admin_id)) {
@@ -139,7 +140,6 @@ elseif (isset($_POST['delete_user'])) {
 }
 
 
-
 ob_end_flush();
 ?>
 
@@ -255,6 +255,7 @@ ob_end_flush();
                                     <input type="hidden" name="user_id" id="updateUserId<?= $fetch_users['id']; ?>" value="<?= $fetch_users['id']; ?>">
                                     <img src="uploaded_img/<?= $fetch_users['image']; ?>" alt="User Image" class="user-image">
                                     <input type="text" name="name" class="box" placeholder="Enter updated name" value="<?= $fetch_users['name']; ?>" required>
+                                    <input type="email" name="email" class="box" placeholder="Enter updated email" value="<?= $fetch_users['email']; ?>" required readonly>
                                     <input type="phone number" name="number" value="<?= $fetch_users['number']; ?>" placeholder="Update number" required class="box">
                                     <label for="updateUserType<?= $fetch_users['id']; ?>">Choose User Type:</label>
                                     <select name="user_type" id="updateUserType<?= $fetch_users['id']; ?>" class="box">
