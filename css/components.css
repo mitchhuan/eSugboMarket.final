@@ -5,6 +5,7 @@
    --green:#27ae60;
    --orange:#f39c12;
    --red:#e74c3c;
+   --darkred: #f61900; 
    --black:#333;
    --light-color:#666;
    --white:#fff;
@@ -66,7 +67,8 @@ section{
 
 .btn,
 .delete-btn,
-.option-btn{
+.option-btn,
+.logout-btn{
    display: block;
    width: 100%;
    margin-top: 1rem;
@@ -91,9 +93,14 @@ section{
    background-color: var(--orange);
 }
 
+.logout-btn{
+   background-color: var(--darkred);
+}
+
 .btn:hover,
 .delete-btn:hover,
-.option-btn:hover{
+.option-btn:hover,
+.logout-btn:hover{
    background-color: var(--black);
 }
 
